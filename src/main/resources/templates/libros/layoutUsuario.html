@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html th:fragment="layout(htmlcuerpo)" lang='es'>
+    <head>
+        <title>HiberLibros</title>
+        <meta charset="UTF-8">
+        <link href="../estilo.css" rel="stylesheet"/>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/united/bootstrap.min.css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/flatly/bootstrap.min.css" rel="stylesheet" media="all">
+
+    </head>
+    <body>
+        <header class="bg-primary">
+            <h1 class="text-secondary">HiberLibros <i class="fas fa-book-open text-secondary"></i></h1>
+        </header>  
+        <!--        <nav class="bg-primary">
+                    <div class="row">
+                        <div class="col-10">
+                            <ul class="nav">
+                                <li class="nav-item"><a onclick="editarUsuario()" class="btn btn-primary">Editar</a></li>
+                                <li class="nav-item"><a href="/libros" class="btn btn-primary">Buscar Libro</a></li>
+                                <li class="nav-item"><a class="btn btn-primary">Buscar Relatos</a></li>
+                                <li class="nav-item"><a class="btn btn-primary">Valoraciones</a></li>
+        
+                            </ul>
+                        </div> 
+                        <div class="col-2 text-right">
+                            <a href="/hiberlibros" class="btn btn-primary">Salir</a>   
+                        </div>
+                    </div>
+        
+                </nav>-->
+        <div>
+            <th:block th:include="${htmlcuerpo}"/>
+        </div>
+        <!--        <div id="editarUsuario" style="display:none">
+                    <form action="/usuarios/editarUsuario" th:object="${usuario}" method="post">
+                        <input type="hidden" th:field="*{id}"/>
+                        <label for="nombre">Nombre: </label>
+                        <input type="text" th:field="*{nombre}" required=""/>
+                        <label for="apellido">Apellido: </label>
+                        <input type="text" th:field="*{apellido}" required=""/>
+                        <label for="direccion">Dirección: </label>
+                        <input type="text" th:field="*{direccion}" required=""/>
+                        <label for="ciudad">Ciudad: </label>
+                        <input type="text" th:field="*{ciudad}" required=""/>
+                        <label for="mail">Correo electrónico: </label>
+                        <input type="email" th:field="*{mail}" readonly=""/>
+                        <label for="telef">Teléfono: </label>
+                        <input type="number" th:field="*{telef}" required=""/>
+                        <input type="submit" value="Editar"/>
+                    </form>
+                </div>-->
+        <!--        <footer>
+                    <a th:onclick="|eliminarU(${usuario.id})|" class="btn btn-outline-danger">Borrar</a>
+                </footer>-->
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>   
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-deserialize@2.0.0-rc1/src/jquery.deserialize.min.js"></script> 
+        <script src="../inicial.js"></script>
+
+    </body>
+</html>

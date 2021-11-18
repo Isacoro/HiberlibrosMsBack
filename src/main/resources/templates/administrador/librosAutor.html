@@ -1,0 +1,35 @@
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Lista de libros</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div class="container">
+            <h2>Listado de libros</h2>
+
+            <table class="table table-striped mt-5">
+            <thead class="text-white bg-primary">
+                <tr>
+                    <th>ISBN</th>
+                    <th>Titulo</th>
+                    <th>Idioma</th>
+                    <th>Autor</th>
+                    <th>Editorial</th>
+                    <th>Genero</th>
+                    <th>Valoracion</th>
+
+                </tr>
+                </thead>
+                <tr th:each="libro:${libros}">
+                    <td th:text="${libro.isbn}"></td>
+                    <td th:text="${libro.titulo}"></td>
+                    <td th:text="${libro.idioma}"></td>
+                    <td th:text="${#objects.nullSafe(libro?.autor?.nombre,'') + ' ' + #objects.nullSafe(libro?.autor?.apellidos,'')}"></td>
+                    <td th:text="${libro.editorial.nombreEditorial}"></td>
+                    <td th:text="${libro.genero.nombre}"></td>
+                    <td th:text="${libro.valoracionLibro}"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

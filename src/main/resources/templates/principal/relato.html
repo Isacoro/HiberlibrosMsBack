@@ -1,0 +1,78 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+
+    <body> 
+        <div class="container">
+            <div class="testbox">
+                <h1 class="addrelato">Añadir Relato</h1>
+                <input  type="hidden" name="id" th:value="${usuario.id}"/>
+                <form action="/hiberlibros/guardarRelato" method="post" enctype="multipart/form-data" >
+                    <input  type="hidden" name="id" th:value="${usuario.id}"/>
+
+                    <div class="form-group">
+                        <label>Titulo <i class="fas fa-book"></i> </label>    
+                        <input  class="form-control col-6"  type="text" name="titulo" required/> <br> 
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fichero <i class="fas fa-file-alt"></i>   </label>
+                        <input class="form-control-file "  type="file" name="ficherosubido" required/><br> 
+                    </div>
+
+                    <div class="form-group">
+                        <label>Genero <i class="fas fa-atlas"></i>  </label>
+                        <select name="genero" class="form-control col-4">
+                            <option th:each="gen:${generos}"
+                                    th:value="${gen.id}" 
+                                    th:text="${gen.nombre}"/>
+                        </select><br> 
+                        <input type="submit" class="btn btn-primary" value="Subir fichero" />
+                </form>  
+
+            </div>
+        </div>
+
+        <!--            
+                    
+                      AÑADIR VALORACION   
+                    <form action="/relato/addValoracion" method="post">           
+                        <label>ID para probar :</label>
+                        <input type="number" name="id"/><br> <br>
+                        <p class="clasificacion">
+                            <input id="radio1" type="radio" name="valoracion" value="5">
+                            <label for="radio1">★</label>
+                            <input id="radio2" type="radio" name="valoracion" value="4">
+                            <label for="radio2">★</label>
+                            <input id="radio3" type="radio" name="valoracion" value="3">
+                            <label for="radio3">★</label>
+                            <input id="radio4" type="radio" name="valoracion" value="2">
+                            <label for="radio4">★</label>
+                            <input id="radio5" type="radio" name="valoracion" value="1">
+                            <label for="radio5">★</label>
+                        </p>
+                        <button type="submit" class="btn btn-primary">Añadir valoracion</button>
+                    </form>
+         
+        MUESTRA TABLA RELATOS
+                              <table>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>titulo</th>
+                                        <th>valoracion usuarios</th>
+                                        <th>Genero</th>
+                                        <th>numero valoraciones</th>
+                                    </tr>
+                                    <tr th:each="rel:${relatos}">
+                                        <td th:text="${rel.id}"></td>            
+                                        <td th:text="${rel.titulo}"></td>  
+                                        <td th:text="${rel.valoracionUsuarios}"></td>  
+                                        <td th:text="${rel.genero.nombre}"></td>  
+                                        <td th:text="${rel.numeroValoraciones}"></td>  
+                                        <td> <a class="btn btn-danger"  th:href="${'/relato/eliminarRelato?id='+rel.id}" >Eliminar</a></td>
+                                        <td> <a class="btn btn-secondary"  th:href="${'/relato/modificar?id='+rel.id}" >Modificar</a></td>
+                                    </tr>
+                                </table>
+        -->
+    </div>
+</body>
+</html>

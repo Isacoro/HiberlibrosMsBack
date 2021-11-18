@@ -1,0 +1,62 @@
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Titulo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <div class="m-2 row">
+            	<div class="col-4">
+              		<img id="previsualizacion" th:src="${imagen}" alt="Imagen no encontrada.Prueba otra URL" style="width:240px;height:320px">
+              	</div>
+              	<div class="col-6">       
+                    <form action="/libros/guardarAdmin" method="post" th:object="${libro}" >
+                        <input class="m-1"  type="hidden" th:field="*{id}"/>
+                        <div class="form-row">
+                        	<div class="form-group col-6">
+                        		<span class="m-1">ISBN:</span><input class="m-1 form-control"  th:field="*{isbn}" placeholder="Descripcion" required />
+                        	</div>
+                        	<div class="form-group col-6">
+                        		<span class="m-1">Titulo:</span> <input  class="m-1 form-control"   th:field="*{titulo}" />
+                        	</div>
+                        </div>
+                        <div class="form-row">
+                        	<div class="form-group col-6">
+                        		<span class="m-1">Idioma:</span> <input  class="m-1 form-control"    th:field="*{idioma}"/>
+                        	</div>
+                        	<div class="form-group col-6">
+                        		<span class="m-1">URL Portada:</span> <input id="urlPortada"  class="m-1 form-control"  th:field="*{uriPortada}" onchange="previsualizar()"/>
+                        	</div>
+                        </div>
+                        <div class="form-row">
+                        	<div class="form-group col-6">
+                        		<span class="m-1">Autor</span> <select  class="m-1 form-control"  name="id_autor">
+                            	<option th:each="autor:${autores}" th:text="${autor.nombre}" th:value="${autor.idAutor}"></option>
+                        		</select>
+                        	</div>
+                        	<div class="form-group col-6">
+                        		<span class="m-1">Editorial</span> <select  class="m-1 form-control"  name="id_editorial">
+                           		<option th:each="edit:${editoriales}" th:text="${edit.nombreEditorial}" th:value="${edit.id}"></option>
+                        		</select>
+                        	</div>
+                        </div>
+                        <div class="form-row">
+                        	<div class="form-group col-6">
+                        		<span class="m-1">Valoracion:</span> <input  class="m-1 form-control"  th:field="*{valoracionLibro}" />
+                        	</div>
+                        	<div class="form-group col-6">
+                        	    <span class="m-1">Genero</span> <select  class="m-1 form-control"  name="id_genero">
+                            	<option th:each="gen:${generos}" th:text="${gen.nombre}" th:value="${gen.id}"></option>
+                        		</select>
+                        	</div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary" ><i class="fas fa-arrow-circle-up"><span style="margin-left: 5px">Guardar</span></i> </button>
+                    </form>
+                 </div>   
+            </div>
+        </div>
+    </body>
+</html>

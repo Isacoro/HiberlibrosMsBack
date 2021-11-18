@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+    <head>
+        <title>HiberLibros</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <div class="container">
+            <form action="/genero/guardar" th:object="${generoForm}" method="post">
+                <label>Añadir género</label>
+                <input type="hidden" th:field="*{id}"/>
+                <input type="text" th:field="*{nombre}"/>
+                <input type="submit" value="Añadir" class="btn btn-outline-dark"/>   
+            </form>
+        </div>
+        <hr>
+        <div class="contenedorlista row col-4">
+            <h1>Listado de Géneros</h1>
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tr th:each='genero: ${generos}'>
+                    <td th:text='${genero.id}' type="hidden"></td>
+                    <td th:text='${genero.nombre}'></td>
+                    <td>
+                        <a class="btn btn-danger" th:href="@{/genero/borrar/{id} (id=${genero.id})}">Eliminar</a>
+                        <a class="btn btn-primary" th:href="@{/genero/editar/{id} (id=${genero.id})}">Editar</a>
+                    </td>
+                </tr>
+            </table>
+            </div>
+    </body>
+</html>

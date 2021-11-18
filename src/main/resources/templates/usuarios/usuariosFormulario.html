@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="es">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="estilo.css" />
+
+        <style>
+            form{
+                margin: 30px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <form  action="usuarios/guardarUsuario" method="post">
+            <label for="nombre">Nombre: </label>
+            <input type="text" name="nombre" required=""/>
+            <label for="apellido">Apellido: </label>
+            <input type="text" name="apellido" required=""/>
+            <label for="direccion">Dirección: </label>
+            <input type="text" name="direccion" required=""/>
+            <label for="ciudad">Ciudad: </label>
+            <input type="text" name="ciudad" required=""/>
+            <label for="mail">Correo electrónico: </label>
+            <input type="email" name="mail" required=""/>
+            <label for="telef">Teléfono: </label>
+            <input type="number" name="telef" required=""/>
+            <input type="submit" value="Guardar Usuario"/>
+
+        </form>
+        <div th:if='${registro!=null}'>
+            <p th:text="${registro}" th:class="${registro.contains('Error')?'rojo':'verde'}"></p>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Dirección</th>
+                        <th>Ciudad</th>
+                        <th>E-mail</th>
+                        <th>Teléfono</th>
+                        <th>Valoración</th>
+                        <th>Dar de baja usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usu:${usuarios}">
+                        <td th:text="${usu.nombre}"></td>
+                        <td th:text="${usu.apellido}"></td>
+                        <td th:text="${usu.direccion}"></td>
+                        <td th:text="${usu.ciudad}"></td>
+                        <td th:text="${usu.mail}"></td>
+                        <td th:text="${usu.telef}"></td>
+                        <td th:text="${usu.valoracionUsuario}"></td>
+                        <td><a th:onclick="|eliminarU(${usu.id})|" class="btn btn-danger">Baja</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.js" ></script>    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" ></script>
+        <script>
+            function eliminarU(pID) {
+
+                bootbox.confirm({
+                    size: "small",
+                    message: "¿Estás seguro?",
+                    callback: function (result) {
+                        if (result) {
+                            window.location.href = "/usuarios/borrar?id=" + pID;
+                        }
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

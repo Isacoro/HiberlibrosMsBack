@@ -1,0 +1,50 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="administrador/vistaAdministrador::layout(~{::body})">
+
+    <body>
+        <p th:if="${borrado!=null}" id="mensajeBorrado" style="display:none"><span  th:text=${borrado}></span></p>
+        <div class="fondo col-sm p-3 min-vh-100"> 
+		<div class="container">
+            <form action="/genero/guardar" th:object="${generoForm}" method="post">
+                        <label for="nombre">Añadir género</label>
+                        <input type="hidden" th:field="*{id}"/>                        
+                        <input class="col-2" type="text" th:field="*{nombre}"/>              
+                        <input type="submit" value="Añadir" class="btn btn-secondary"/>
+
+            </form>
+
+            <div class="contenedorlista row col-4">
+
+                <table class="table table-light mt-5">
+                    <thead class="text-white bg-primary">
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each='genero: ${generos}'>
+                            <td th:text='${genero.id}' type="hidden"></td>
+                            <td th:text='${genero.nombre}'></td>
+                            <td>
+                                <a class="btn btn-dark btn-sm" th:href="@{/genero/borrar/{id} (id=${genero.id})}">Eliminar</a>
+                                <a class="btn btn-dark btn-sm" th:onclick="|editarGenero(${genero.id})|">Editar</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="display:none" id="editarGenero">
+            <form action="/genero/guardar" method="post">
+                <label>Añadir género</label>
+                <input type="hidden" name="id"/>
+                <input type="text" name="nombre"/>
+                <input type="submit" value="Añadir" class="btn btn-primary"/>   
+            </form>
+        </div>
+        </div>
+    </body>
+</html>

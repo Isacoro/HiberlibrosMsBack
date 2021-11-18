@@ -1,0 +1,35 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="administrador/vistaAdministrador::layout(~{::body})">
+    <head>
+        <title>Relatos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="fondo col-sm p-3 min-vh-100">
+        <div class="container">
+            <table class="table table-light mt-5">
+            <thead class="text-white bg-primary">
+                <tr>
+                    <th>Id</th>
+                    <th>Título</th>
+                    <th>Valoracion usuarios</th>
+                    <th>Género</th>
+                    <th>Número valoraciones</th>
+                    <th>Acciones</th>
+                </tr>
+           </thead>
+                <tr th:each='rel:${relatos}'>
+                    <td th:text="${rel.id}"></td>            
+                    <td th:text="${rel.titulo}"></td>  
+                    <td th:text="${rel.valoracionUsuarios}"></td>  
+                    <td th:text="${rel.genero.nombre}"></td>  
+                    <td th:text="${rel.numeroValoraciones}"></td>  
+                    <td> <a class="btn btn-dark btn-sm"  th:onclick="|eliminarRelato(${rel.id})|" ><i class="far fa-trash-alt" ><span style="margin-left:5px">Eliminar</span></i></a>
+                    <a class="btn btn-dark btn-sm" th:onclick="|modificarRelato(${rel.id})|" ><i class="far fa-edit"><span style="margin-left:5px">Modificar</span></i></a></td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </body>
+</html>

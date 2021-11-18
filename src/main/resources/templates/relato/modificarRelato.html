@@ -1,0 +1,36 @@
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <title>Titulo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container">
+            <div class=" m-2">
+                <div class="row" >             
+
+                    <form action="/relato/modificarRelato" method="post" th:object="${relato}" >
+                        <input class="m-1"  type="hidden" th:field="*{id}"/>          
+
+                        <label>Titulo : </label>                       
+                        <input  class="m-1"   th:field="*{titulo}" /><br/>
+
+                        <input  class="m-1" type="hidden"   th:field="*{fichero}" />
+                        <input  class="m-1" type="hidden"   th:field="*{numeroValoraciones}" />                        
+                        <input  class="m-1" type="hidden"  th:field="*{valoracionUsuarios}" />
+
+
+                        <label>Genero : </label>                       
+                        <select name="genero">
+                            <option th:each="gen:${generos}"
+                                    th:value="${gen.id}" 
+                                    th:text="${gen.nombre}"/>
+                        </select>
+
+                        <button type="submit" class="btn btn-primary" ><i class="fas fa-arrow-circle-up"><span style="margin-left: 5px">Guardar</span></i> </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

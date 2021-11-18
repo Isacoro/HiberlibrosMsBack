@@ -1,0 +1,93 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="administrador/vistaAdministrador::layout(~{::body})">
+    <head>
+        <title>Titulo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <p th:if="${borrado!=null}" id="mensajeBorrado" style="display:none"><span  th:text=${borrado}></span></p>
+        <div class="fondo col-sm p-3 min-vh-100">
+        <div class="container">
+            <a onclick="altaUsuario()" class="btn btn-dark"><i class="far fa-trash-alt" ><span style="margin-left:5px">Alta Administrador</span></i></a>
+            <table class="table table-light mt-5">
+                <thead class="text-white bg-primary">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Dirección</th>
+                        <th>Ciudad</th>
+                        <th>E-mail</th>
+                        <th>Teléfono</th>
+                        <th>Valoración</th>
+                        <th>Dar de baja usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usu:${usuarios}">
+                        <td th:text="${usu.nombre}"></td>
+                        <td th:text="${usu.apellido}"></td>
+                        <td th:text="${usu.direccion}"></td>
+                        <td th:text="${usu.ciudad}"></td>
+                        <td th:text="${usu.mail}"></td>
+                        <td th:text="${usu.telef}"></td>
+                        <td th:text="${usu.valoracionUsuario}"></td>
+                        <td><a th:onclick="|eliminarUsuario(${usu.id})|" class="btn btn-dark btn-sm"><i class="far fa-trash-alt" ><span style="margin-left:5px">Baja</span></i></a></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="altaUsuario" style="display:none">
+            <form  action="/usuarios/altaAdmin" method="post">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="nombre">Nombre: </label>
+                        <input class="form-control" type="text" name="nombre" required=""/>
+                    </div>
+                    <div class="col-6">
+                        <label for="apellido">Apellido: </label>
+                        <input class="form-control" type="text" name="apellido" required=""/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="direccion">Dirección: </label>
+                        <input class="form-control" type="text" name="direccion" required=""/>
+                    </div>
+                    <div class="col-6">
+                        <label for="ciudad">Ciudad: </label>
+                        <input class="form-control" type="text" name="ciudad" required=""/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="mail">Correo electrónico: </label>
+                        <input class="form-control" type="email" name="mail" required=""/>
+                    </div>
+                    <div class="col-6">
+                        <label for="telef">Teléfono: </label>
+                        <input class="form-control" type="number" name="telef" required=""/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="password">Password: </label>
+                        <input class="form-control" type="password" name="password" required=""/>
+                    </div>
+                    <div class="col-6">
+                        <label for="rep_password">Repetir password: </label>
+                        <input class="form-control" type="password" name="rep_password" required=""/>
+                    </div>
+                </div>
+                <input type="submit" value="Guardar Administrador" class="btn btn-primary"/>
+            </form>
+            <div th:if='${registro!=null}'>
+                <p th:text="${registro}" th:class="${registro.contains('Error')?'rojo':'verde'}"></p>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Lista de autores</title>
+    </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/united/bootstrap.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/minty/bootstrap.css" rel="stylesheet" />
+    <link href="autores.css" rel="stylesheet"/>
+
+    <body class="lista">
+        <nav>
+            <div class="row">
+                <div class="col-10">
+                    <ul class="nav">
+                        <li class="nav-item"></li>
+                        <li class="nav-item"><a href="/libros" class="btn">Inicio</a></li>
+                    </ul>
+                </div> 
+                <div class="col-2 text-right">
+                    <a href="/hiberlibros" class="btn">Salir</a>   
+                </div>
+            </div>
+        </nav>
+        </br>
+        <div class="container">
+            <div class="row">
+                <form action="/buscarAutor" method="get" class="offset-12">
+                    <input type="text" name="buscador" placeholder="Buscar autor"/>
+                    <input type="submit" value="Buscar" class="btn btn-primary"/>
+                </form>
+                <a th:href="@{/autorForm}" class="btn btn-success offset-6"> Nuevo autor</a>
+            </div>
+        </div>
+        <div class="container">
+            <ul class="list-group">
+                <li class="list-group-item clearfix" th:each="autor:${autores}">
+                    <h3 class="list-group-item-heading" th:text="${autor.nombre} + ' ' + ${autor.apellidos}"></h3>
+                    <p class="list-group-item-text lead" th:text="${autor.biografia}"></p>
+                    <a class="btn btn-secondary" th:onclick="|consultarLibros(${autor.idAutor})|">Libros</a>
+                    <br />
+                    <div class="btn-toolbar pull-right" role="toolbar" aria-label="">
+                        <a th:href="@{/autorForm/{id}(id=${autor.idAutor})}" class="btn btn-warning">Editar</a>
+                        <a th:href="@{/deleteAutor/{id}(id=${autor.idAutor})}" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="listaLibros" style="display:none"></div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>   
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-deserialize@2.0.0-rc1/src/jquery.deserialize.min.js"></script> 
+        <script src="inicial.js"></script>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+    <head>
+        <title>HiberLibros</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Mis preferencias</h1>
+            <!--TABLA GENEROS-->
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th>Géneros</th>
+                    </tr>
+                </thead>
+                <tr th:each="preferencia:${preferencias}">
+                    <td th:text= "${#objects.nullSafe(preferencia?.genero?.nombre,'')}"></td>
+                    <!--                    <td th:text="${preferencia.genero.nombre}"></td>-->
+                    <td>
+                        <a class="btn btn-danger" th:href="@{/preferencia/borrar/{id} (id=${preferencia.id})}">Eliminar Género</a>
+                    </td>
+                </tr>
+
+            </table>
+            <!-- AÑADIR GENERO           -->
+            <div class="contenedor">
+                <form action="/preferencia/guardar" th:object="${fomulario}" method="post">
+                    <label>Añadir nuevo género:</label>  
+                    <select  class="m-3"  name="id_genero">
+                        <option th:each="genero:${generos}" th:text="${genero.nombre}" th:value="${genero.id}"></option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Añadir</button>   
+                </form>
+            </div>
+    </body>
+</html>

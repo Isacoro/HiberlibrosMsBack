@@ -1,0 +1,421 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+
+    <body>
+        <nav class="bg-secondary">
+            <div class="row">
+                <div class="col-12 ">
+                    <ul class="nav">
+                        <!--                        <li class="nav-item"><a  href="#tusLibros" class="btn btn-secondary">Tus Libros</a></li>
+                                                <li class="nav-item"><a  href="#tusRelatos" class="btn btn-secondary">Tus Relatos</a></li>-->
+                        <li class="nav-item"><a  href="#tusPeticiones" class="btn btn-secondary">Tus Peticiones</a></li>
+                        <li class="nav-item"><a  href="#tusIntercambios" class="btn btn-secondary">Tus Intercambios</a></li>             
+
+
+                    </ul>
+                </div> 
+            </div>
+
+        </nav>
+        <div class="container">
+
+            <div class="row py-5 px-4 w-100 ">
+                <div class="w-100 mx-auto ">
+                    <!-- Profile widget -->
+                    <div class="bg-white shadow rounded overflow-hidden  ">
+
+                        <div class="px-4  float-right ">
+
+                            <div class="p-4 rounded shadow-sm bg-light mt-2 ">      
+                                <h3 class="">Datos Personales</h3>
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold ">Nombre : </p>
+                                    <p class="font-italic mb-0 ml-2 mb-1" th:text="${usuario.nombre}"></p> 
+                                </div>
+
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold">Apellido: </p>
+                                    <p class="font-italic mb-0 ml-2  mb-1" th:text="${usuario.apellido}"></p> 
+                                </div>
+
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold">Email :</p>
+                                    <p class="font-italic mb-0 ml-2  mb-1" th:text="${usuario.mail}"></p> 
+                                </div>
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold">Ciudad :</p>
+                                    <p class="font-italic mb-0 ml-2  mb-1" th:text="${usuario.ciudad}"></p> 
+                                </div>
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold">Direccion :</p>
+                                    <p class="font-italic mb-0 ml-2  mb-1" th:text="${usuario.direccion}"></p> 
+                                </div>
+                                <div class="row">
+                                    <p class="font mb-0 font-weight-bold">Teléfono :</p>
+                                    <p class="font-italic mb-0 ml-2  mb-1" th:text="${usuario.telef}"></p> 
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="px-4 pt-0 pb-4 cover bannerPerfil">
+                            <div class="media align-items-end profile-head">
+                                <div class="profile mr-3 mt-2">   
+
+                                    <p th:if="${usuario.uriFoto!=null}">                     
+                                    <img th:src="@{/usuarios/download(imagen=${usuario.uriFoto})}" class="imgRedonda" /> <br>
+                                    </p>
+                                    <p th:if="${usuario.uriFoto==null}">
+                                        <img src="../perfil.png" class="imgRedonda" /> <br>
+                                    </p>
+
+
+                                    <a onclick="editarUsuario()" class=" btn btn-outline-dark btn-sm btn-block mt-4 col-6">Editar perfil</a></br>
+
+                                    <form action="/usuarios/imagenPerfil" method="post" enctype="multipart/form-data" >
+                                        <input  type="hidden" name="id" th:value="${usuario.id}"/>           
+
+                                        <div class="form-group" id="ocultar">
+
+                                            <label for="file-upload" class="custom-file-upload ">
+                                                <i class="fas fa-file-image"> </i>  Seleccionar imagen
+                                            </label>
+                                            <input id="file-upload" type="file" name="ficheroImagen" required/>
+                                            <input type="submit" class="btn btn-dark btn-sm btn-block col-6" value="Cambiar" />
+
+                                        </div>
+
+
+                                    </form>  
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="bg-light p-4 d-flex justify-content-end text-center">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item"> 
+                                    <h5 class="font-weight-bold mb-0 d-block" th:text="${librosUsuario}"></h5><i class="fas fa-book " style="color:black"> </i>   Mis libros
+                                </li>
+                                <li class="list-inline-item">
+                                    <h5 class="font-weight-bold mb-0 d-block" th:text="${numIntercambioPendiente}"></h5><i class="far fa-handshake" style="color:black"></i>     Intercambios pendientes
+                                </li>
+                                <li class="list-inline-item"> 
+                                    <h5 class="font-weight-bold mb-0 d-block" th:text="${usuario.valoracionUsuario}"></h5> <i class="fas fa-star" style="color:orange"> </i>    Mi valoración
+
+
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+
+                        <div class="py-4 px-4">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <h3 class="mb-0">Mis libros</h3>
+                                <a href="/hiberlibros/guardarLibro" class="btn btn-primary"><i class="fas fa-plus-square"></i>&nbsp;Añadir libro</a>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-lg-4 mb-4 " th:each='l:${libros}'>
+                                    <div class="card ">        
+                                        <img th:src="${l.libro.uriPortada}" alt="" class=" imagenLibros">
+                                        <div class="card-body ">                                               
+                                            <h5 class="tituloLibro" th:text="${l.libro.titulo}"></h5>
+
+
+                                            <p class="font mb-0 font-weight-bold">ISBN :<td th:text="${l.libro.isbn}"></td></p>                                      
+                                            <p class="font mb-0 font-weight-bold">Idioma : <td th:text="${l.libro.idioma}"></td>
+                                            <p class="font mb-0 font-weight-bold">Editorial :  <td th:text="${l.libro.editorial.nombreEditorial}"></td>
+                                            <p class="font mb-0 font-weight-bold">Género :  <td th:text="${l.libro.genero.nombre}"></td>
+                                            <p class="font mb-0 font-weight-bold">Valoración : <td th:text="${l.libro.valoracionLibro}"></td>  <i class="fas fa-star" style="color:orange"> </i> 
+                                            <p class="font mb-0 font-weight-bold">Estado :   <td th:text="${l.estadoConservacion}"></td>
+
+
+                                            <p class="card-text"></p>
+                                            <td><a th:href="@{/hiberlibros/borrarUL(id=${l.id})}" class="btn btn-outline-danger btn-sm">Borrar <i class="fas fa-trash-alt"></i></a></td>
+
+
+                                        </div>                                    
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div id="tusRelatos" class='col-12'>
+                                    <h2>Tus relatos</h2>
+                                    <table class="testbox table"  >
+                                        <tr>
+                                            <th>id</th>
+                                            <th>titulo</th>
+                                            <th>Género</th>
+                                            <th>Valoraciones</th>
+                                            <th>NºValoraciones</th>
+                                        </tr>
+                                        <tr th:each="rel:${relatos}">    
+                                            <td th:text="${rel.id}"></td>  
+                                            <td th:text="${rel.titulo}"></td>
+                                            <td th:text="${rel.genero.nombre}"></td>   
+                                            <td class="text-center"> 
+                                                <span th:text="${rel.valoracionUsuarios}" ></span>
+                                                <i class="fas fa-star" style="color:orange"></i>     
+                                            </td>  
+                                            <td th:text="${rel.numeroValoraciones}" style="text-align: center"></td> 
+                                            <td><a th:href="@{/relato/eliminarRelato(id=${rel.id})}" class="btn btn-sm btn-secondary">Borrar</a></td>
+
+                                        </tr>
+                                    </table>
+                                    <a th:href="@{/hiberlibros/relato(id=${usuario.id})}" class="btn btn-primary"><i class="fas fa-plus-square"></i>&nbsp;Añadir relato</a>
+
+                                </div>
+                            </div>
+
+
+
+
+                            <!--                            <table class="testbox table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>ISBN</th>
+                                                                    <th>Titulo</th>
+                                                                    <th>Idioma</th>
+                                                                    <th>Editorial</th>
+                                                                    <th>Genero</th>
+                                                                    <th>Valoracion</th>
+                                                                    <th>Estado</th>
+                                                                    <th>Quiero/Tengo</th>
+                                                                    <th>Eliminar</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr th:each='l:${libros}'>
+                                                                    <td th:text="${l.libro.isbn}"></td>
+                                                                    <td th:text="${l.libro.titulo}"></td>
+                                                                    <td th:text="${l.libro.idioma}"></td>
+                                                                    <td th:text="${l.libro.editorial.nombreEditorial}"></td>
+                                                                    <td th:text="${l.libro.genero.nombre}"></td>
+                                                                    <td th:text="${l.libro.valoracionLibro}"></td>
+                                                                    <td th:text="${l.estadoConservacion}"></td>
+                                                                    <td th:text="${l.quieroTengo}"></td>
+                                                                    <td><a th:href="@{/hiberlibros/borrarUL(id=${l.id})}" class="btn btn-sm btn-secondary">Borrar</a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <a href="/hiberlibros/guardarLibro" class="btn btn-primary"><i class="fas fa-plus-square"></i>&nbsp;Añadir libro</a>
+                                                    </div>
+                                                </div>
+                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+
+
+                            <!--                            <div class="row">
+                                                            <div id="tusRelatos" class='col-12'>
+                                                                <h2>Tus relatos</h2>
+                                                                <table class="testbox table"  >
+                                                                    <tr>
+                                                                                                    <th>id</th>
+                                                                        <th>titulo</th>
+                                                                        <th>Género</th>
+                                                                        <th>Valoraciones</th>
+                                                                        <th>NºValoraciones</th>
+                                                                    </tr>
+                                                                    <tr th:each="rel:${relatos}">    
+                                                                                                    <td th:text="${rel.id}"></td>  
+                                                                        <td th:text="${rel.titulo}"></td>
+                                                                        <td th:text="${rel.genero.nombre}"></td>   
+                                                                        <td class="text-center"> 
+                                                                            <span th:text="${rel.valoracionUsuarios}" ></span>
+                                                                            <i class="fas fa-star" style="color:orange"></i>     
+                                                                        </td>  
+                                                                        <td th:text="${rel.numeroValoraciones}" style="text-align: center"></td> 
+                                                                        <td><a th:href="@{/relato/eliminarRelato(id=${rel.id})}" class="btn btn-sm btn-secondary">Borrar</a></td>
+                            
+                                                                    </tr>
+                                                                </table>
+                                                                <a th:href="@{/hiberlibros/relato(id=${usuario.id})}" class="btn btn-primary"><i class="fas fa-plus-square"></i>&nbsp;Añadir relato</a>
+                            
+                                                            </div>
+                                                        </div>-->
+                            <!--                            <div id="tusPeticiones" class="row">
+                                                            <div class='col-6'>
+                                                                <h2>Nuevas Peticiones</h2>
+                                                                <table class="testbox table ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Libro</th>
+                                                                            <th>Usuario</th>
+                                                                            <th>Gestionar</th>
+                                                                        </tr>                           
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr th:each="petiR:${petiRecibidas}">
+                                                                            <td th:text="${petiR.idUsuarioLibro.libro.titulo}"></td>
+                                                                            <td th:text="${petiR.idUsuarioSolicitante.nombre}"></td>
+                                                                            <td><a th:onclick="|gestionarPeticion(${petiR.id})|" class="btn btn-sm btn-secondary">Gestionar</a></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class='col-6'>
+                                                                <h2>Tus peticiones</h2>
+                                                                <table class="testbox table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Usuario</th>
+                                                                            <th>Libro</th>
+                                                                            <th>Estado</th>
+                                                                            <th>Retirar</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr th:each="peti:${misPeticiones}">
+                                                                            <td th:text="${peti.idUsuarioLibro.usuario.nombre}"></td>
+                                                                            <td th:text="${peti.idUsuarioLibro.libro.titulo}"></td>
+                                                                            <td>Pendiente</td>
+                                                                            <td><a th:href="@{/peticion/baja(id=${peti.id})}" class="btn btn-secondary btn-sm">Retirar</a></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class='row'>
+                                                            <div id="tusIntercambios" class='col-12'>
+                                                                <h2>Intercambios</h2>
+                                                                <table class="testbox table"  >
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Usuario</th>
+                                                                            <th>Libro Prestado</th>
+                                                                            <th>Libro Recibido</th>
+                                                                            <th>Fecha de Inicio</th>
+                                                                            <th>Fecha de devolución</th>
+                                                                            <th>Finalizar intercambio</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr th:each="inter:${intercambiosPropios}">
+                                                                            <td th:text="${inter.usuarioPrestatario.usuario.nombre}"></td>
+                                                                            <td th:text="${inter.usuarioPrestador.libro.titulo}"></td>
+                                                                            <td th:text="${inter.usuarioPrestatario.libro.titulo}"></td>
+                                                                            <td th:text="${inter.fechaPrestamo}"></td>
+                                                                            <td th:text="${inter.fechaDevolucion!=null?inter.fechaDevolucion:'Préstamo en curso'}"></td>
+                                                                            <td><span th:if='${inter.fechaDevolucion==null}'><a th:href='@{/hiberlibros/finIntercambio(id=${inter.id}, id_usuario=${usuario.id})}' class='btn btn-secondary'>Finalizar</a></span></td>
+                                                                        </tr>
+                                                                        <tr th:each="interP:${intercambiosPeticiones}">
+                                                                            <td th:text="${interP.usuarioPrestador.usuario.nombre}"></td>
+                                                                            <td th:text="${interP.usuarioPrestatario.libro.titulo}"></td>
+                                                                            <td th:text="${interP.usuarioPrestador.libro.titulo}"></td>
+                                                                            <td th:text="${interP.fechaPrestamo}"></td>
+                                                                            <td th:text="${interP.fechaDevolucion!=null?interP.fechaDevolucion:'Préstamo en curso'}"></td>
+                                                                            <td><span th:if='${interP.fechaDevolucion==null}'><a th:href='@{/hiberlibros/finIntercambio(id=${interP.id}, id_usuario=${usuario.id})}' class='btn btn-secondary'>Finalizar</a></span></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a th:onclick="|eliminarU(${usuario.id})|" class="btn btn-outline-danger" title='Borrar usuario'>Borrar Usuario</a>
+                                                    </body>
+                                                    </html>
+                                            </div>
+                                        </div>
+                                        
+                            -->
+                            <div id="tusPeticiones" class="row">
+                                <div class='col-6'>
+                                    <h2>Nuevas Peticiones</h2>
+                                    <table class="testbox table ">
+                                        <thead>
+                                            <tr>
+                                                <th>Libro</th>
+                                                <th>Usuario</th>
+                                                <th>Gestionar</th>
+                                            </tr>                           
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="petiR:${petiRecibidas}">
+                                                <td th:text="${petiR.idUsuarioLibro.libro.titulo}"></td>
+                                                <td th:text="${petiR.idUsuarioSolicitante.nombre}"></td>
+                                                <td><a th:onclick="|gestionarPeticion(${petiR.id})|" class="btn btn-sm btn-secondary">Gestionar</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class='col-6'>
+                                    <h2>Tus peticiones</h2>
+                                    <table class="testbox table">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Libro</th>
+                                                <th>Estado</th>
+                                                <th>Retirar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="peti:${misPeticiones}">
+                                                <td th:text="${peti.idUsuarioLibro.usuario.nombre}"></td>
+                                                <td th:text="${peti.idUsuarioLibro.libro.titulo}"></td>
+                                                <td>Pendiente</td>
+                                                <td><a th:href="@{/peticion/baja(id=${peti.id})}" class="btn btn-secondary btn-sm">Retirar</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div id="tusIntercambios" class='col-12'>
+                                    <h2>Intercambios</h2>
+                                    <table class="testbox table"  >
+                                        <thead>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Libro Prestado</th>
+                                                <th>Libro Recibido</th>
+                                                <th>Fecha de Inicio</th>
+                                                <th>Fecha de devolución</th>
+                                                <th>Finalizar intercambio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="inter:${intercambiosPropios}">
+                                                <td th:text="${inter.usuarioPrestatario.usuario.nombre}"></td>
+                                                <td th:text="${inter.usuarioPrestador.libro.titulo}"></td>
+                                                <td th:text="${inter.usuarioPrestatario.libro.titulo}"></td>
+                                                <td th:text="${inter.fechaPrestamo}"></td>
+                                                <td th:text="${inter.fechaDevolucion!=null?inter.fechaDevolucion:'Préstamo en curso'}"></td>
+                                                <td><span th:if='${inter.fechaDevolucion==null}'><a th:href='@{/hiberlibros/finIntercambio(id=${inter.id}, id_usuario=${usuario.id})}' class='btn btn-secondary'>Finalizar</a></span></td>
+                                            </tr>
+                                            <tr th:each="interP:${intercambiosPeticiones}">
+                                                <td th:text="${interP.usuarioPrestador.usuario.nombre}"></td>
+                                                <td th:text="${interP.usuarioPrestatario.libro.titulo}"></td>
+                                                <td th:text="${interP.usuarioPrestador.libro.titulo}"></td>
+                                                <td th:text="${interP.fechaPrestamo}"></td>
+                                                <td th:text="${interP.fechaDevolucion!=null?interP.fechaDevolucion:'Préstamo en curso'}"></td>
+                                                <td><span th:if='${interP.fechaDevolucion==null}'><a th:href='@{/hiberlibros/finIntercambio(id=${interP.id}, id_usuario=${usuario.id})}' class='btn btn-secondary'>Finalizar</a></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <a th:onclick="|eliminarU(${usuario.id})|" class="btn btn-outline-danger" title='Borrar usuario'>Borrar</a>
+                        </body>
+
+                        <div class="row">
+                            <div class="col-lg-4 mb-4 " th:each='l:${libros}'>
+                                <div class="card ">        
+                                    <img th:src="${l.libro.uriPortada}" alt="" class=" imagenLibros">
+                                    <div class="card-body ">                                               
+                                        <h5 class="tituloLibro" th:text="${l.libro.titulo}"></h5>
+

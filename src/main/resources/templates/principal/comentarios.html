@@ -1,0 +1,64 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+
+    <body>
+
+        <div class="container">
+            <!-- <button onclick="formForo()" class="btn btn-secondary">Añadir Foro</button> 
+            -->
+            <div class="row ">
+                <div class="col-6">
+                    <h2 class="comentario_titulo-libro">Libro : <span th:text="${foro.idLibro.titulo}"></span></h2>
+                    <h3 class="comentario_titulo-foro">Foro : <span th:text="${foro.tituloForo}"></span></h3>
+                </div>
+                <div class="">
+                    <div class="row card-header">
+                        <div class="col-6">
+                            <img th:src="@{/usuarios/download(imagen=${foro.usuarioCreador.uriFoto})}" class="imgRedondaPeque" />
+                            <h5><span class="comentario_nombreCompleto" th:text="${foro.usuarioCreador.nombre + ' ' + foro.usuarioCreador.apellido}"></span></h5>
+                        </div>
+                        <div class="col-6">
+                            <span class="comentario_ciudad" th:text="${'Localidad: ' + foro.usuarioCreador.ciudad}"> </span> </br> <span class="comentario_valoracion" th:text="${'Valoración Usuario: ' + foro.usuarioCreador.valoracionUsuario}"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:each='comen:${comentarios}' class=" ">
+                <div class="row card-header">
+                    <div class="col-2">
+                        <img th:src="@{/usuarios/download(imagen=${comen.usuarioComentario.uriFoto})}" class="imgRedondaPeque" />
+
+                        <span  class="comentario_nombreCompleto" th:text="${comen.usuarioComentario.nombre + ' ' + comen.usuarioComentario.apellido }"> </span>
+                    </div>
+                    <div class="col-6">
+                        <span class="comentario_ciudad" th:text="${'Localidad: ' +comen.usuarioComentario.ciudad}"> </span></br><span class="comentario_valoracion" th:text="${'Valoración Usuario: ' +comen.usuarioComentario.valoracionUsuario}"> </span>
+                    </div>
+                </div>
+                <span class="card-body" th:utext="${comen.comentarioForo}"></span>
+            </div> 
+            </br>
+            <form action="/hilos/alta" method="post" >
+                <input type="hidden" name="idForoLibro" th:value="${foro.id}"/>
+                Mensaje
+                <textarea class="form-control" id="comentario" name="comentario">
+                </textarea>
+                </br>
+                <div class="row">
+                    <div class="col-2">
+                <button type="submit" class="btn btn-secondary">Alta comentario</button>
+                    </div>
+                    <div class="col-5">
+                <a th:href="|/foros/libro?id=${foro.id}|" class="btn btn-secondary">Volver a foros del libro</a>
+                    </div>
+                </div>
+            </form>
+            
+
+
+        </div>
+        <!--        <div id="formularioForo" style="display:none">
+                </div>
+        -->
+    </body>
+</html>

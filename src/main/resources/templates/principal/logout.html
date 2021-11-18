@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang='es'>
+    <head>
+        <title>HiberLibros</title>
+        <meta charset="UTF-8">
+        <link href="estilo.css" rel="stylesheet"/>
+        <link href="../estilo.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/united/bootstrap.min.css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/flatly/bootstrap.min.css" rel="stylesheet" media="all">
+    </head>
+
+    <body class="logout">
+        <header class="bg-primary">
+            <img src="../logoHiberlibros.jpg" alt="alt" width="450" height="100"/>
+        </header>   
+        <br/>
+
+        <p th:if="${error!=null}"><span th:text="${error}" class="text-secondary"></span></p>
+
+        <div class="register-photo">
+
+
+            <!--<form action="/hiberlibros" method="post">
+                <h3>Sesion cerrada correctamente</h3>
+                <input type="submit" value="Volver a entrar" class="btn btn-secondary btn-sm"/>
+            </form>-->
+            <form>
+                 <h3>Sesion cerrada correctamente</h3>
+                 <a href="/hiberlibros" class="btn btn-secondary btn-sm">Volver a entrar</a>
+            </form>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>   
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery-deserialize@2.0.0-rc1/src/jquery.deserialize.min.js"></script> 
+        <script src="inicial.js"></script>
+    </body>
+</html>

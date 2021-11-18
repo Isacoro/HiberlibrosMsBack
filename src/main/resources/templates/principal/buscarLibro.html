@@ -1,0 +1,77 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+
+    <body>
+        <div class="container-fluid">
+            <!--
+            <form action="/hiberlibros/buscarLibro" method="get">
+                <input type="text" name="buscador" placeholder="Buscar por título o ISBN"/>
+                <input type="submit" value="Buscar" class="btn btn-primary"/>
+                <a href="/hiberlibros/buscarLibro" class="btn btn-warning"><i class="far fa-trash-alt"></i>&nbsp;Limpiar filtros</a>
+            </form>-->
+            <div class="testbox">
+                <table
+                    class="table table-light" 
+                    data-toggle="table"
+                    data-pagination="true"
+                    data-search="true"
+                    data-url="/hiberlibros/tablaBuscarLibro">
+                    <thead>
+                        <tr>
+                            <th data-field="uriPortada" data-formatter="image">Portada</th>
+                            <th data-field="isbn" data-sortable="true">ISBN</th>
+                            <th data-field="titulo" data-sortable="true">Título</th>
+                            <th data-field="autor" data-sortable="true">Autor</th>
+                            <th data-field="idioma" data-sortable="true">Idioma</th>
+                            <th data-field="editorial" data-sortable="true">Editorial</th>
+                            <th data-field="valoracion" data-formatter="valoracion" data-sortable="true">Valoracion</th>
+                            <th data-field="estado" data-sortable="true">Estado</th>
+                            <th data-field="propietario">Propietario</th>
+                            <th data-field="id" data-formatter="btnReservar">Reservar</th>
+                            <th data-field="id_libro" data-formatter="btnValoracion">Valoración (0-5)</th>
+                            <th data-field="id_foro_libro" data-formatter="btnForo"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr th:each='l:${libros}'>
+                            <td th:text="${l.libro.isbn}"></td>
+                            <td th:text="${l.libro.titulo}"></td>
+                            <td th:text="${l.libro.autor.nombre+' '+l.libro.autor.apellidos}"></td>
+                            <td th:text="${l.libro.idioma}"></td>
+                            <td th:text="${l.libro.editorial.nombreEditorial}"></td>
+                            <td class="text-center"> 
+                                <span th:text="${l.libro.valoracionLibro}"></span>
+                                <i class="fas fa-star" style="color:orange"></i>  
+                            </td> 
+                            <td th:text="${l.estadoConservacion}"></td>
+                            <td th:text="${l.usuario.nombre}"></td>
+                            <td><a th:href="@{/peticion/alta(id_ul=${l.id}, id_solicitante=${usuario.id})}"   class="btn btn-secondary">Pedir</a></td>
+                            <td>
+                                <form action="/addValoracionLibro" method="post">
+                                    <input type="hidden" name="id"  th:value="${l.libro.id}" />  
+                                    <span class="clasificacion">
+                                        <input class="puntuacion" th:id="${l.libro.id + 'radio5'}" type="radio" name="valoracion" value="5">
+                                        <label th:for="${l.libro.id + 'radio5'}" class="estrella">★</label>
+    
+                                        <input class="puntuacion" th:id="${l.libro.id + 'radio4'}" type="radio" name="valoracion" value="4">
+                                        <label th:for="${l.libro.id + 'radio4'}" class="estrella">★</label>
+    
+                                        <input class="puntuacion" th:id="${l.libro.id + 'radio3'}" type="radio" name="valoracion" value="3">
+                                        <label th:for="${l.libro.id + 'radio3'}"  class="estrella">★</label>
+    
+                                        <input class="puntuacion" th:id="${l.libro.id + 'radio2'}" type="radio" name="valoracion" value="2">
+                                        <label th:for="${l.libro.id + 'radio2'}"  class="estrella">★</label>
+    
+                                        <input class="puntuacion"  th:id="${l.libro.id + 'radio1'}" type="radio" name="valoracion" value="1">
+                                        <label th:for="${l.libro.id + 'radio1'}"  class="estrella">★</label>
+                                    </span>
+                                    <button type="submit" class="btn btn-sm btn-primary">Valorar</button>
+                                </form>
+                            </td>
+                        </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

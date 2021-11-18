@@ -1,0 +1,49 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+
+    <body>
+
+        <div class="container">
+            <button onclick="formForo()" class="btn btn-secondary">Añadir Foro</button>
+            <table class="testbox table">
+                <thead>
+                    <tr>
+                        <th>Titulo</th>
+                        <th>Creado por </th>
+                        <th>Libro</th>                       
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each='f:${foros}'>
+                        <div th:if="${f.desactivado == false}">
+                            <td th:text="${f.tituloForo}"></td>
+                            <td th:text="${f.idLibro.titulo}"></td>                                  
+                            <td th:text="${f.usuarioCreador.nombre}"></td>
+                            <td><a th:href="|/hilos/consultarPorForo?idForo=${f.id}|" class="btn btn-secondary">consultar foros</a> </td>
+                            
+                        </div>
+                    </tr>
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+        <div id="formularioForo" style="display:none">
+            <form action="/foros/alta" method="get" th:object="${foroLibro}">
+                <label for="tituloForo">Título del foro: </label>
+                <input type="text" class="form-control" th:name="tituloForo" />
+                <label for="libro"> Libro</label>
+                <select class="form-control" name="idLibro">
+                    <option th:each="lib:${libros}" th:value="${lib.id}"><span th:text="${lib.titulo}"></span></option>
+                </select>
+                
+                </br>
+                <button type="submit" class="btn btn-secondary">Dar Alta foro</button>
+            </form>
+        </div>
+
+    </body>
+</html>

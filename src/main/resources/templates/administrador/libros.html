@@ -1,0 +1,42 @@
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="administrador/vistaAdministrador::layout(~{::body})">
+    
+    <body>
+        <p th:if="${borrado!=null}" id="mensajeBorrado" style="display:none"><span  th:text=${borrado}></span></p>
+        <div class="fondo col-sm p-3 min-vh-100">
+		<div class="container">
+            <table class="table table-light mt-5">
+            <thead class="text-white bg-primary">
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Titulo</th>
+                        <th>Idioma</th>
+                        <th>Autor</th>
+                        <th>Editorial</th>
+                        <th>Genero</th>
+                        <th>Valoracion</th>
+                    	<th>Acciones</th>
+                    </tr>
+                </thead><!-- comment -->
+                <tbody>
+                    <tr th:each="libro:${libros}">
+                        <td th:text="${libro.isbn}"></td>
+                        <td th:text="${libro.titulo}"></td>
+                        <td th:text="${libro.idioma}"></td>
+                        <!--<td ><span th:if="${libro.autor!=null}" th:text="${libro.autor.nombre + ' ' + libro.autor.apellidos}"></span></td>-->
+                        <td th:text="${#objects.nullSafe(libro?.autor?.nombre,'') + ' ' + #objects.nullSafe(libro?.autor?.apellidos,'')}"></td>
+                        <td th:text="${libro.editorial.nombreEditorial}"></td>
+                        <td th:text="${libro.genero.nombre}"></td>
+                        <td th:text="${libro.valoracionLibro}"></td>
+
+                        <td>                   
+                            <a type="button" class="btn btn-dark btn-sm" th:onclick="|eliminarLibro(${libro.id})|"><i class="far fa-trash-alt" ><span style="margin-left:5px">Borrar</span></i></a>
+                            <a type="button" class="btn btn-dark btn-sm" th:onclick="|modificarLibros(${libro.id})|"><i class="far fa-edit"><span style="margin-left:5px">Modificar</span></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </body>
+</html>

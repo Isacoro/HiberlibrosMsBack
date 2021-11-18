@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+      th:replace="principal/layoutUsuario::layout(~{::body})">
+    <body>
+        <div class="container">
+            <h2>Mis libros</h2>
+            <table class="table table-striped mt-5">
+                <tr>
+                    <th>ISBN</th>
+                    <th>Titulo</th>
+                    <th>Idioma</th>
+                    <th>Autor</th>
+                    <th>Editorial</th>
+                    <th>Genero</th>
+                    <th>Valoracion</th>
+                </tr>
+                <tr th:each="libro:${libros}">
+                    <td th:text="${libro.isbn}"></td>
+                    <td th:text="${libro.titulo}"></td>
+                    <td th:text="${libro.idioma}"></td>
+                    <!--<td ><span th:if="${libro.autor!=null}" th:text="${libro.autor.nombre + ' ' + libro.autor.apellidos}"></span></td>-->
+                    <td th:text="${#objects.nullSafe(libro?.autor?.nombre,'') + ' ' + #objects.nullSafe(libro?.autor?.apellidos,'')}"></td>
+                    <td th:text="${libro.editorial.nombreEditorial}"></td>
+                    <td th:text="${libro.genero.nombre}"></td>
+                    <td th:text="${libro.valoracionLibro}"></td>
+                    <td>                   
+                        <a type="button" class="btn btn-dark btn-sm" th:href="${'/eliminar?id='+ libro.id}"><i class="far fa-trash-alt" ><span style="margin-left:5px">Borrar</span></i></a>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-dark btn-sm" th:href="${'/modificar?id='+ libro.id}"><i class="far fa-trash-alt" ><span style="margin-left:5px">Modificar</span></i></a>
+                    </td>
+                </tr>
+            </table>
+            
+            </br><hr>
+            <h3>Añadir nuevo libro</h3>
+            <div class=" m-2">                           
+                <form action="/libros/guardar" method="post"  >
+                    <div class="row" > 
+                        <input class="m-1" name="id" type="hidden" />
+                        <div class="col-2"><span class="m-1">ISBN</span><input class="m-1" name="isbn" placeholder="ISBN" required /></div>
+                        <div class="col-2"><span class="m-1">Titulo</span> <input  class="m-1"  name="titulo"placeholder="Titulo" /></div>
+                        <div class="col-2"><span class="m-1">Idioma</span> <input  class="m-1"  name="idioma" placeholder="Idioma"/></div>
+                        <div class="col-2"><span class="m-1">URL</span> <input  class="m-1" name="uriPortada" placeholder="URL"/></div>
+                        <div class="col-2"><span class="m-1">Valoracion</span> <input  class="m-1" name="valoracionLibro" placeholder="Valoracion"/></div>
+
+                        <div class="col-3" > <span class="m-1">Autor</span> <select  class="m-1"  name="id_autor">
+                                <option th:each="autor:${autores}" th:text="${autor.nombre + autor.apellidos}" th:value="${autor.idAutor}"></option>
+                            </select></div>
+
+                        <div class="col-3" ><span class="m-1">Editorial</span> <select  class="m-1"  name="id_editorial">
+                                <option th:each="edit:${editoriales}" th:text="${edit.nombreEditorial}" th:value="${edit.id}"></option>
+                            </select></div>
+
+                        <div class="col-3" ><span class="m-1">Genero</span> <select  class="m-1"  name="id_genero">
+                                <option th:each="gen:${generos}" th:text="${gen.nombre}" th:value="${gen.id}"></option>
+                            </select></div>
+                        <div class="row"><div class="col-3 m-2"><button type="submit" class="btn btn-dark" ><i class="fas fa-arrow-circle-up"><span style="margin-left: 5px">Guardar</span></i> </button></div></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

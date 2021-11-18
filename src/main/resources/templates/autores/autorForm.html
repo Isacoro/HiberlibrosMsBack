@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Formulario de autor</title>
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+        <link href="/autores.css" rel="stylesheet"/>
+    </head>
+    <body class="formulario">
+        <div class="container insert-form">
+            <form action="/saveAutor" id="formulario" method="post" th:object="${autor}">
+                <h3>Informacion del autor</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input class="form-control" th:field="*{idAutor}" hidden/>
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="*{nombre}" placeholder="Nombre"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="*{apellidos}" placeholder="Apellidos"/>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <textarea form="formulario" th:field="*{biografia}" class="form-control" placeholder="Biografia" style="width: 100%; height: 150px;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
