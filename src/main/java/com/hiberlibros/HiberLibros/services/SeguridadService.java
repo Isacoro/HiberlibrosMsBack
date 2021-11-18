@@ -15,31 +15,28 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Usuario
- */
+
 @Service
 public class SeguridadService implements ISeguridadService {
 
     @Autowired
-    private UsuarioSeguridadRepository repoUsuSeg;
-
+    private UsuarioSeguridadRepository usuarioSeguridadRepository;
     @Autowired
-    private UsuarioService serviceUsuario;
-
+    private UsuarioService usuarioService;
     @Autowired
-    private RolRepository repoRol;
-
+    private RolRepository rolRepository;
     @Autowired
     private PasswordEncoder passEncoder;
 
     @Transactional
     public String altaUsuarioSeguridad(String mail, Integer idUsuario, String password, String nombre_rol) {
-        Optional<UsuarioSeguridad> usuAplic = repoUsuSeg.findByIdUsuario(idUsuario);
+        Optional<UsuarioSeguridad> usuAplic = usuarioSeguridadRepository.findByIdUsuario(idUsuario);
         if (usuAplic.isPresent()) {
             List<Rol> roles = usuAplic.get().getRoles();
-            List<Rol> rolesFiltrados = roles.stream().filter(x -> x.getNombre_rol().equals(nombre_rol)).collect(Collectors.toList());
+            List<Rol> rolesFiltrados = roles.stream()
+                    .filter(x -> x.getNombre_rol()
+                            .equals(nombre_rol))
+                    .collect(Collectors.toList());
             if (rolesFiltrados.size() > 0) {
                 return "error: alta no realizada: usuario con este Rol activado previamente";
             }
@@ -49,32 +46,29 @@ public class SeguridadService implements ISeguridadService {
         u.setIdUsuario(idUsuario);
         u.setMail(mail);
         u.setPassword(passEncoder.encode(password));
-        repoUsuSeg.save(u);
+        usuarioSeguridadRepository.save(u);
 
         Rol r = new Rol();
         r.setIdUsuario(u);
         r.setNombre_rol(nombre_rol);
-        repoRol.save(r);
+        rolRepository.save(r);
 
         return "ok";
-
     }
 
     @Transactional
     public long bajaUsuarioSeguridad(Integer idUsuarioSeguridad) {
-        repoUsuSeg.deleteById(idUsuarioSeguridad);
+        usuarioSeguridadRepository.deleteById(idUsuarioSeguridad);
         Long elementosBorrados = new Long(0);
-        // Long elementosBorrados = repoRol.deleteByIdUsuarioSeguridad(idUsuarioSeguridad);
         return elementosBorrados;
     }
 
     public long bajaUsuarioSeguridadPorMail(String mailUsuarioSeguridad) {
-        Optional<UsuarioSeguridad> usuarioSeguridad = repoUsuSeg.findByMail(mailUsuarioSeguridad);
+        Optional<UsuarioSeguridad> usuarioSeguridad = usuarioSeguridadRepository.findByMail(mailUsuarioSeguridad);
         if (usuarioSeguridad.isPresent()) {
-            Optional<Rol> r = repoRol.findByIdUsuario(usuarioSeguridad.get());
+            Optional<Rol> r = rolRepository.findByIdUsuario(usuarioSeguridad.get());
             if (r.isPresent()) {
-                repoRol.deleteById(r.get().getId());
-
+                rolRepository.deleteById(r.get().getId());
             }
             return bajaUsuarioSeguridad(usuarioSeguridad.get().getId());
         }

@@ -21,18 +21,17 @@ import org.springframework.stereotype.Component;
 public class ValidacionService implements UserDetailsService {
 
     @Autowired
-    private UsuarioSeguridadRepository repoUsuSeg;
-
+    private UsuarioSeguridadRepository usuarioSeguridadRepository;
     @Autowired
-    private UsuarioRepository repoUsu;
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String[] usuarios = username.split(",");
-        Optional<Usuario> usuario = repoUsu.findByMail(usuarios[0]);
+        Optional<Usuario> usuario = usuarioRepository.findByMail(usuarios[0]);
         if (usuario.isPresent()) {
 
-            Optional<UsuarioSeguridad> usuarioSeguridad = repoUsuSeg.findByIdUsuario(usuario.get().getId());
+            Optional<UsuarioSeguridad> usuarioSeguridad = usuarioSeguridadRepository.findByIdUsuario(usuario.get().getId());
 
             if (usuario.isPresent()) {
 
@@ -54,6 +53,4 @@ public class ValidacionService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario/Password incorrecto");
         }
     }
-    
-
 }

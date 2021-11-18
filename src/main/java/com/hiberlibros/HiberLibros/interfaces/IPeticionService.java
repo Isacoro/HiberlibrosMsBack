@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hiberlibros.HiberLibros.interfaces;
 
 import com.hiberlibros.HiberLibros.entities.Peticion;
@@ -10,10 +5,7 @@ import com.hiberlibros.HiberLibros.entities.Usuario;
 import com.hiberlibros.HiberLibros.entities.UsuarioLibro;
 import java.util.List;
 
-/**
- *
- * @author Usuario
- */
+
 public interface IPeticionService {
 
     public List<Peticion> consultaTodasPeticiones();
@@ -45,5 +37,4 @@ public interface IPeticionService {
     public void borrarPorUsuarioSolicitante(Usuario u);
     
     public void borrarPorUsuarioLibro(UsuarioLibro ul);
-
 }

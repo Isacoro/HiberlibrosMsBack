@@ -10,59 +10,51 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Usuario
- */
 @Service
 public class ForoLibroService implements IForoLibroService {
 
     @Autowired
-    private ForoLibroRepository repoForoLibro;
+    private ForoLibroRepository foroLibroRepository;
     @Autowired
-    private IComentarioForoService serviceComentForo;
+    private IComentarioForoService comentarioForoService;
 
     @Override
     public List<ForoLibro> recuperarForosDeLibro(Libro idLibro) {
-        return repoForoLibro.findByIdLibroAndDesactivado(idLibro, Boolean.FALSE);
+        return foroLibroRepository.findByIdLibroAndDesactivado(idLibro, Boolean.FALSE);
     }
 
     @Override
     public List<ForoLibro> recuperarTodosLosForos() {
-        return repoForoLibro.findByDesactivado(Boolean.FALSE);
+        return foroLibroRepository.findByDesactivado(Boolean.FALSE);
     }
 
     @Override
     public void altaForoLibro(ForoLibro l) {
         l.setDesactivado(Boolean.FALSE);
-        repoForoLibro.save(l);
+        foroLibroRepository.save(l);
     }
 
     @Override
     public void eliminarForoLibro(Integer id) {
-        ForoLibro fl = repoForoLibro.findById(id).get();
-        serviceComentForo.eliminarComentariosForo(fl);
-        repoForoLibro.deleteById(id);
+        ForoLibro fl = foroLibroRepository.findById(id).get();
+        comentarioForoService.eliminarComentariosForo(fl);
+        foroLibroRepository.deleteById(id);
     }
 
     @Override
     public void bajaForoLibro(Integer id) {
-        ForoLibro fl = repoForoLibro.findById(id).get();
+        ForoLibro fl = foroLibroRepository.findById(id).get();
         fl.setDesactivado(Boolean.TRUE);
-        repoForoLibro.save(fl);
+        foroLibroRepository.save(fl);
     }
 
     @Override
     public ForoLibro consultarForo(Integer idForo) {
-        Optional<ForoLibro> foroLibro =  repoForoLibro.findById(idForo);
+        Optional<ForoLibro> foroLibro =  foroLibroRepository.findById(idForo);
         if (foroLibro.isPresent()){
             return foroLibro.get();  
         }else {
             return new ForoLibro();
         }
-        
     }
-    
-    
-    
 }

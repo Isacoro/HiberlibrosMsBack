@@ -53,5 +53,4 @@ public class UsuarioSeguridadDto implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

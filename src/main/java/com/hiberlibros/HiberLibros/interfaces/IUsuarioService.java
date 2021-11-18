@@ -6,10 +6,7 @@ import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 
-/**
- *
- * @author Usuario
- */
+
 public interface IUsuarioService {
 
     public String guardarUsuario(Usuario u);
@@ -33,5 +30,4 @@ public interface IUsuarioService {
     public Integer contarUsuarios();
 
     public ResponseEntity<Resource> visualizarImagen(String imagen);
-
 }

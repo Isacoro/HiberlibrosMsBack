@@ -1,11 +1,7 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 /**
- * Author:  Usuario
- * Created: 16 sept. 2021
+ * Author:  Isabel
+ * Created: 01 nov. 2021
  */
 
 insert into editoriales values (1,"Alfaguara");

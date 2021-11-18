@@ -5,10 +5,7 @@ import com.hiberlibros.HiberLibros.entities.Usuario;
 import com.hiberlibros.HiberLibros.entities.UsuarioLibro;
 import java.util.List;
 
-/**
- *
- * @author Usuario
- */
+
 public interface IUsuarioLibroService {
 
     public UsuarioLibro encontrarId(Integer id);

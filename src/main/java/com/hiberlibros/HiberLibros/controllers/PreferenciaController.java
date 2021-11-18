@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,25 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class PreferenciaController {
 
     @Autowired
-    private IPreferenciaService prefService;
-   
+    private IPreferenciaService preferenciaService;
     @Autowired
-    private IGeneroService serviceGenero;
-    
+    private IGeneroService generoService;
     @Autowired
-    private IUsuarioService usuServ;
-
+    private IUsuarioService usuarioService;
     @Autowired
-    private ISeguridadService serviceSeguridad;
+    private ISeguridadService seguridadService;
 
     
     @GetMapping
     public Map<String, Object> verPreferencias(String mail) {
         
         Map<String, Object> m = new HashMap<>();
-        Usuario u = usuServ.usuarioRegistrado(mail);
-        m.put("preferencias", prefService.findByUsuario(u));
-        m.put("generos", serviceGenero.getGeneros());
+        Usuario u = usuarioService.usuarioRegistrado(mail);
+        m.put("preferencias", preferenciaService.findByUsuario(u));
+        m.put("generos", generoService.getGeneros());
         m.put("formulario", new Preferencia());
 
         return m;
@@ -53,19 +49,18 @@ public class PreferenciaController {
     public void anadirPreferencia(Integer idGenero, String email) {
     
         
-        Usuario u = usuServ.usuarioRegistrado(email);
-        Genero gen = serviceGenero.encontrarPorId(idGenero);
+        Usuario u = usuarioService.usuarioRegistrado(email);
+        Genero gen = generoService.encontrarPorId(idGenero);
         Preferencia pref = new Preferencia();
         pref.setGenero(gen);
         pref.setUsuario(u);
         
-        prefService.addPreferencia(pref);
+        preferenciaService.addPreferencia(pref);
     }
-
 
     @GetMapping("/borrar")
     public void borrarPreferencia(Integer id) {
         
-        prefService.borrarPreferencia(id);
+        preferenciaService.borrarPreferencia(id);
     }  
 }

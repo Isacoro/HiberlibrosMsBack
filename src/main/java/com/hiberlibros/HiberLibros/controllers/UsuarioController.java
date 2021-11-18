@@ -1,7 +1,6 @@
 package com.hiberlibros.HiberLibros.controllers;
 
 import com.hiberlibros.HiberLibros.entities.Usuario;
-import com.hiberlibros.HiberLibros.interfaces.ISeguridadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,21 +31,23 @@ public class UsuarioController {
     @Value("${carpetas.recursos.hiberlibros}")
     private String rutaBase;
 
+    //Devuelve una lista con todos los usuarios, parte administrador
     @GetMapping
-    public Map<String, Object> usuarioFormulario(String registro) { //devuelve una lista con todos los usuarios, parte administrador
+    public Map<String, Object> usuarioFormulario(String registro) {
         Map<String, Object> m=new HashMap<>();        
         m.put("registro", registro);
         m.put("usuarios", serviceUsuario.usuariosList());
         return m;
     }
 
-    @PostMapping("/guardarUsuario")//guarda un usuario devuelve un mensaje de error concreto
+    @PostMapping("/guardarUsuario")
     public String usuarioRegistrar(Usuario u, String password) { 
         System.out.println(u.getApellido()+"baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaack");
        return serviceUsuario.guardarUsuarioYSeguridad(u, password);
     }
 
-    @PostMapping("/editarUsuario")//edita usuario, manda el usuario para rellenar el formulario
+    //Edita usuario, manda el usuario para rellenar el formulario
+    @PostMapping("/editarUsuario")
     public void usuarioEditar(Usuario u) {
         serviceUsuario.editarUsuario(u);
     }
@@ -56,7 +57,8 @@ public class UsuarioController {
         return serviceUsuario.borrarUsuario(id);    
     }
 
-    @GetMapping("/borrarUsuario")//borra usuario por ID en HIBERLIBRO
+    //borra usuario por ID en web vista usuario
+    @GetMapping("/borrarUsuario")
     public String borrarUsuario(Integer id) {
         serviceUsuario.borrarUsuario(id);
         return "redirect:/hiberlibros";
@@ -97,12 +99,10 @@ public class UsuarioController {
     public ResponseEntity<Resource> mostrarImagen(String imagen) {
 
         return serviceUsuario.visualizarImagen(imagen);
-
     }
     
     @GetMapping("/usuarioSeguridadMail")
     public Usuario usuarioSeguridadMail(String mail){
         return serviceUsuario.usuarioRegistrado(mail);
     }
-
 }

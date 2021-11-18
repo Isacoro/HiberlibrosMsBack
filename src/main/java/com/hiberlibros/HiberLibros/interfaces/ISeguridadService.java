@@ -1,9 +1,6 @@
 package com.hiberlibros.HiberLibros.interfaces;
 
-/**
- *
- * @author Usuario
- */
+
 public interface ISeguridadService {
 
     public String altaUsuarioSeguridad(String mail, Integer idUsuario, String password, String nombre_rol);

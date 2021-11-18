@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- *
- * @author Usuario
- */
+
 public interface IntercambioRepository extends JpaRepository<Intercambio, Integer> {
 
     public List<Intercambio> findByUsuarioPrestador(UsuarioLibro ul);

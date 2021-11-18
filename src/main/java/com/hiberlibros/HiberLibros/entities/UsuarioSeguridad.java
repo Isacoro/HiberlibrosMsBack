@@ -26,12 +26,10 @@ public class UsuarioSeguridad {
     private Integer id;
 
     private Integer idUsuario;
-
     private String mail;
     private String password;
 
     @OneToMany(mappedBy = "idUsuario", fetch = FetchType.EAGER)
-    
     private List<Rol> roles;
 
 }

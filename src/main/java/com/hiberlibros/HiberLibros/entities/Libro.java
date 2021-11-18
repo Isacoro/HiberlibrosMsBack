@@ -1,6 +1,5 @@
 package com.hiberlibros.HiberLibros.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -43,5 +42,4 @@ public class Libro {
     @ManyToOne
     @JoinColumn(name = "id_genero")
     private Genero genero;
-
 }

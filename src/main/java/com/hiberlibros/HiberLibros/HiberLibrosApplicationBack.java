@@ -9,5 +9,4 @@ public class HiberLibrosApplicationBack {
 	public static void main(String[] args) {
 		SpringApplication.run(HiberLibrosApplicationBack.class, args);
 	}
-
 }

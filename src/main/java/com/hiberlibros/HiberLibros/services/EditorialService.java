@@ -10,48 +10,44 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Usuario
- */
+
 @Service
 public class EditorialService implements IEditorialService {
 
     @Autowired
-    private EditorialRepository repoEditorial;
-
+    private EditorialRepository editorialRepository;
     @Autowired
-    private ILibroService repoLibro;
+    private ILibroService libroService;
+
 
     @Override
     public Editorial encontrarPorId(Integer id) {
-        return repoEditorial.findByIdAndDesactivado(id,Boolean.FALSE).get();
-
+        return editorialRepository.findByIdAndDesactivado(id,Boolean.FALSE).get();
     }
 
     @Override
     public List<Editorial> consultaTodas() {
-        return repoEditorial.findByDesactivado(Boolean.FALSE);
+        return editorialRepository.findByDesactivado(Boolean.FALSE);
     }
 
     @Override
     public void altaModificacionEditorial(Editorial editorial) {
         editorial.setDesactivado(Boolean.FALSE);
-        repoEditorial.save(editorial);
+        editorialRepository.save(editorial);
     }
 
     @Override
     public Boolean bajaEditorial(Integer id) {
         Editorial e = encontrarPorId(id);
-        List<Libro> l = repoLibro.encontrarPorEditorial(e);
+        List<Libro> l = libroService.encontrarPorEditorial(e);
         if (l.isEmpty() || l == null) {
-            repoEditorial.deleteById(id);
+            editorialRepository.deleteById(id);
             return true;
         } else {
-            Boolean result = repoLibro.bajaLibrosList(l);
+            Boolean result = libroService.bajaLibrosList(l);
             if (result) {
                 e.setDesactivado(Boolean.TRUE);
-                repoEditorial.save(e);
+                editorialRepository.save(e);
             }
             return result;
         }
@@ -59,7 +55,7 @@ public class EditorialService implements IEditorialService {
 
     @Override
     public Editorial consultaPorIdEditorial(int idEditorial) {
-        Optional<Editorial> editorial = repoEditorial.findByIdAndDesactivado(idEditorial,Boolean.FALSE);
+        Optional<Editorial> editorial = editorialRepository.findByIdAndDesactivado(idEditorial,Boolean.FALSE);
         if (editorial.isPresent()) {
             return editorial.get();
         } else {
@@ -69,7 +65,6 @@ public class EditorialService implements IEditorialService {
 
     @Override
     public List<Editorial> consultaPorNombreEditorial(Editorial editorial) {
-        return repoEditorial.findByNombreEditorialIgnoreCaseAndDesactivado(editorial.getNombreEditorial(),Boolean.FALSE);
+        return editorialRepository.findByNombreEditorialIgnoreCaseAndDesactivado(editorial.getNombreEditorial(),Boolean.FALSE);
     }
-
 }

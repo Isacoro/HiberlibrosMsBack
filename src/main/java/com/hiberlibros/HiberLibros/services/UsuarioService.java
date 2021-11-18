@@ -10,9 +10,8 @@ import com.hiberlibros.HiberLibros.repositories.UsuarioRepository;
 import com.hiberlibros.HiberLibros.interfaces.IUsuarioService;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Optional;
-import javax.transaction.Transactional;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -23,33 +22,27 @@ import org.springframework.http.ResponseEntity;
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
-    private UsuarioRepository urService;
-
+    private UsuarioRepository usuarioRepository;
     @Autowired
-    private ISeguridadService serviceUsuarioSeguridad;
-
+    private ISeguridadService seguridadService;
     @Autowired
-    private IUsuarioLibroService serviceUsuLi;
+    private IUsuarioLibroService usuarioLibroService;
 
     @Override
     public String guardarUsuarioYSeguridad(Usuario u, String password) {
         String resultado = guardarUsuario(u);
-        //Optional<Usuario> usu = urService.findByMail(u.getMail());
         if (resultado.equals("Usuario registrado con éxito")) {
-            serviceUsuarioSeguridad.altaUsuarioSeguridad(u.getMail(), u.getId(), password, "Usuario");
+            seguridadService.altaUsuarioSeguridad(u.getMail(), u.getId(), password, "Usuario");
         }
-
         return resultado;
     }
 
     @Override
     public String guardarUsuarioYSeguridadAdmin(Usuario u, String password) {
         String resultado = guardarUsuario(u);
-        //Optional<Usuario> usu = urService.findByMail(u.getMail());
         if (resultado.equals("Usuario registrado con éxito")) {
-            serviceUsuarioSeguridad.altaUsuarioSeguridad(u.getMail(), u.getId(), password, "Administrador");
+            seguridadService.altaUsuarioSeguridad(u.getMail(), u.getId(), password, "Administrador");
         }
-
         return resultado;
     }
 
@@ -57,38 +50,42 @@ public class UsuarioService implements IUsuarioService {
     public String guardarUsuario(Usuario u) {
         String resultado = "";
         int auxMail = u.getMail().indexOf("@");
-        String mailSubstring = u.getMail().substring(auxMail);//para comprar si el mail tiene buen formato
+        String mailSubstring = u.getMail().substring(auxMail);//para comprobar si el mail tiene buen formato
+
         if (u.getNombre() == null || u.getApellido() == null || u.getDireccion() == null || u.getCiudad() == null || u.getMail() == null || u.getTelef() == null) {
             resultado = "Error: Campo requerido vacío";
+
         } else if (!mailSubstring.contains(".")) { //@blabla. si no punto consideramos que no esta bien
             resultado = "Error: e-mail incorrecto";
-        } else if (urService.findByMailContainsIgnoreCase(u.getMail()).isPresent()) {//su ya existe ese mail
-            Usuario uAux = urService.findByMailContainsIgnoreCase(u.getMail()).get();
+
+        } else if (usuarioRepository.findByMailContainsIgnoreCase(u.getMail()).isPresent()) {//su ya existe ese mail
+            Usuario uAux = usuarioRepository.findByMailContainsIgnoreCase(u.getMail()).get();
+
             if (uAux.getDesactivado()) {
                 uAux.setDesactivado(Boolean.FALSE);
-                urService.save(uAux);
+                usuarioRepository.save(uAux);
                 resultado = "Usuario registrado con éxito";
+
             } else if (!uAux.getDesactivado()) {
                 resultado = "Error: Ya existe un usuario registrado con ese e-mail";
             }
         } else {
             u.setDesactivado(Boolean.FALSE);
-            urService.save(u);
+            usuarioRepository.save(u);
             resultado = "Usuario registrado con éxito";
         }
         return resultado;
-
     }
 
     @Override
     public Boolean borrarUsuario(Integer id) {
-        Optional<Usuario> usuario = urService.findById(id);
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
         if (usuario.isPresent()) {
-            Boolean result = serviceUsuLi.usuarioBorrado(usuario.get());
+            Boolean result = usuarioLibroService.usuarioBorrado(usuario.get());
             if (result) {
                 usuario.get().setDesactivado(Boolean.TRUE);
-                urService.save(usuario.get());
-                serviceUsuarioSeguridad.bajaUsuarioSeguridadPorMail(usuario.get().getMail());
+                usuarioRepository.save(usuario.get());
+                seguridadService.bajaUsuarioSeguridadPorMail(usuario.get().getMail());
             }
             return result;
         } else {
@@ -98,12 +95,12 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public List<Usuario> usuariosList() {
-        return urService.findByDesactivado(Boolean.FALSE);
+        return usuarioRepository.findByDesactivado(Boolean.FALSE);
     }
 
     @Override
     public boolean registrado(String mail) { //comprueba si existe ese usuario por mail
-        if (urService.findByMail(mail).isEmpty()) {
+        if (usuarioRepository.findByMail(mail).isEmpty()) {
             return false;
         } else {
             return true;
@@ -112,23 +109,23 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario usuarioRegistrado(String mail) {
-        return urService.findByMail(mail).get();
+        return usuarioRepository.findByMail(mail).get();
     }
 
     @Override
     public String editarUsuario(Usuario usr) {
-        urService.save(usr);
+        usuarioRepository.save(usr);
         return usr.getMail();
     }
 
     @Override
     public Usuario usuarioId(Integer id) {
-        return urService.findByIdAndDesactivado(id, Boolean.FALSE).get();
+        return usuarioRepository.findByIdAndDesactivado(id, Boolean.FALSE).get();
     }
 
     @Override
     public Integer contarUsuarios() {
-        return urService.countByDesactivado(Boolean.FALSE);
+        return usuarioRepository.countByDesactivado(Boolean.FALSE);
     }
 
     @Override
@@ -153,5 +150,4 @@ public class UsuarioService implements IUsuarioService {
             return null;
         }
     }
-
 }

@@ -17,61 +17,60 @@ import com.hiberlibros.HiberLibros.interfaces.IUsuarioLibroService;
 public class PeticionService implements IPeticionService {
 
     @Autowired
-    private PeticionRepository repoPeticion;
-
+    private PeticionRepository peticionRepository;
     @Autowired
-    private IUsuarioLibroService ulService;
-
+    private IUsuarioLibroService usuarioLibroService;
     @Autowired
-    private ICorreoService serviceCorreo;
+    private ICorreoService correoService;
+
 
     @Override
     public List<Peticion> consultaTodasPeticiones() {
-        return repoPeticion.findAll();
+        return peticionRepository.findAll();
     }
     
     @Override
     public Peticion consultarPeticionId(Integer id) {
-        return repoPeticion.findById(id).get();
+        return peticionRepository.findById(id).get();
     }
 
+    //guarda la petición y obtiene aquí los objetos UL y Usuario
     @Override
-    public void insertaPeticion(Peticion p, Integer id_ul, Usuario u) { //guarda la petición y obtiene aquí los objetos UL y Usuario
-        p.setIdUsuarioLibro(ulService.encontrarId(id_ul));
+    public void insertaPeticion(Peticion p, Integer id_ul, Usuario u) {
+        p.setIdUsuarioLibro(usuarioLibroService.encontrarId(id_ul));
         p.setIdUsuarioSolicitante(u);
         p.setAceptacion(false);
         p.setPendienteTratar(true);
 
-        repoPeticion.save(p);
+        peticionRepository.save(p);
         
-        String destinatario  = ulService.encontrarId(id_ul).getUsuario().getMail();
-        String asunto = "peticion de libro " + ulService.encontrarId(id_ul).getLibro().getTitulo() ;
-        String cuerpo = "le han solicitado el libro "+ ulService.encontrarId(id_ul).getLibro().getTitulo() 
+        String destinatario  = usuarioLibroService.encontrarId(id_ul).getUsuario().getMail();
+        String asunto = "peticion de libro " + usuarioLibroService.encontrarId(id_ul).getLibro().getTitulo() ;
+        String cuerpo = "le han solicitado el libro "+ usuarioLibroService.encontrarId(id_ul).getLibro().getTitulo()
                 + "  autentiquese en Hiberlibros para gestionar la peticion: http://localhost:8091/hiberlibros";
-        serviceCorreo.enviarCorreo(destinatario, asunto, cuerpo);
+        correoService.enviarCorreo(destinatario, asunto, cuerpo);
     }
 
     @Override
     public void insertaModificaPeticion(Peticion p) {
-
-        repoPeticion.save(p);
+        peticionRepository.save(p);
     }
 
     @Override
     public void eliminaPeticion(Peticion p) {
-        repoPeticion.deleteById(p.getId());
+        peticionRepository.deleteById(p.getId());
     }
 
     @Override
     public void eliminarId(Integer id) {
-        repoPeticion.deleteById(id);;
+        peticionRepository.deleteById(id);;
     }
 
     @Override
     public void aceptarPeticion(Peticion p) {
         p.setAceptacion(Boolean.TRUE);
         p.setPendienteTratar(Boolean.FALSE);
-        repoPeticion.save(p);
+        peticionRepository.save(p);
         
         
         String destinatario  = p.getIdUsuarioSolicitante().getMail();
@@ -80,56 +79,57 @@ public class PeticionService implements IPeticionService {
                 + " acepta el intercambio del libro " + p.getIdUsuarioLibro().getLibro().getTitulo()
                 + " contacte con el en el telefono " + p.getIdUsuarioLibro().getUsuario().getTelef()
                 +  " o mediante su correo electronico " + p.getIdUsuarioLibro().getUsuario().getMail();
-        serviceCorreo.enviarCorreo(destinatario, asunto, cuerpo);
-        
-        
-        
-        
+        correoService.enviarCorreo(destinatario, asunto, cuerpo);
     }
 
     @Override
     public void rechazarPeticion(Integer id) {
-        Peticion p = repoPeticion.findById(id).get();
+        Peticion p = peticionRepository.findById(id).get();
         p.setAceptacion(Boolean.FALSE);
         p.setPendienteTratar(Boolean.FALSE);
-        repoPeticion.save(p);
+        peticionRepository.save(p);
         
         String destinatario  = p.getIdUsuarioSolicitante().getMail();
         String asunto = "peticion de libro rechazada ";
         String cuerpo = " su peticion de intercambio del libro " + p.getIdUsuarioLibro().getLibro().getTitulo() + " ha sido rechazadas";
-        serviceCorreo.enviarCorreo(destinatario, asunto, cuerpo);
-        
-        
-        
-        
+        correoService.enviarCorreo(destinatario, asunto, cuerpo);
     }
 
     @Override
     public List<Peticion> consultarPeticionesPendientes(Usuario u) {
-        return repoPeticion.findByPendienteTratar(Boolean.TRUE).stream().filter(x -> x.getIdUsuarioSolicitante().equals(u.getId())).collect(Collectors.toList());
+        return peticionRepository.findByPendienteTratar(Boolean.TRUE).stream()
+                .filter(x -> x.getIdUsuarioSolicitante()
+                        .equals(u.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Peticion> consultarPeticionesAceptadas(Usuario u) {
-        return repoPeticion.findByAceptacion(Boolean.TRUE).stream().filter(x -> x.getIdUsuarioSolicitante().equals(u.getId())).collect(Collectors.toList());
+        return peticionRepository.findByAceptacion(Boolean.TRUE).stream()
+                .filter(x -> x.getIdUsuarioSolicitante()
+                        .equals(u.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Peticion> consultarPeticionesRechazadas(Usuario u) {
-        return repoPeticion.findByAceptacion(Boolean.FALSE).stream().filter(x -> x.getIdUsuarioSolicitante().equals(u.getId())).collect(Collectors.toList());
+        return peticionRepository.findByAceptacion(Boolean.FALSE).stream()
+                .filter(x -> x.getIdUsuarioSolicitante()
+                        .equals(u.getId()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Peticion> consutarPeticionesUsuarioPendientes(Usuario u) {
-        return repoPeticion.findByPendienteTratarAndIdUsuarioSolicitante(Boolean.TRUE, u);
+        return peticionRepository.findByPendienteTratarAndIdUsuarioSolicitante(Boolean.TRUE, u);
     }
 
     @Override
-    public List<Peticion> consultarPeticonesRecibidas(Usuario u) { //Jesús
+    public List<Peticion> consultarPeticonesRecibidas(Usuario u) {
         List<Peticion> p = new ArrayList<>();
-        List<UsuarioLibro> ul = ulService.buscarUsuario(u);//busca la lista de libros de un usuario
+        List<UsuarioLibro> ul = usuarioLibroService.buscarUsuario(u);//busca la lista de libros de un usuario
         ul.forEach(x -> {
-            List<Peticion> pAux = repoPeticion.findByIdUsuarioLibroAndPendienteTratar(x, Boolean.TRUE); //busca por UsuarioLibro y que este pendiente de tratar
+            List<Peticion> pAux = peticionRepository.findByIdUsuarioLibroAndPendienteTratar(x, Boolean.TRUE); //busca por UsuarioLibro y que este pendiente de tratar
             pAux.forEach(y -> {
                 p.add(y);//lo va almacenando hasta tener todos. 
             });
@@ -139,12 +139,12 @@ public class PeticionService implements IPeticionService {
 
     @Override
     public void borrarPorUsuarioSolicitante(Usuario u) {
-        repoPeticion.deleteByIdUsuarioSolicitante(u);        
+        peticionRepository.deleteByIdUsuarioSolicitante(u);
     }
 
     @Override
     public void borrarPorUsuarioLibro(UsuarioLibro ul) {
-        repoPeticion.deleteByIdUsuarioLibro(ul);
+        peticionRepository.deleteByIdUsuarioLibro(ul);
     }
 
 }

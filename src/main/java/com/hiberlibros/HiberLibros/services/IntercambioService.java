@@ -13,18 +13,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Usuario
- */
+
 @Service
 public class IntercambioService implements IIntercambioService {
 
     @Autowired
-    private IntercambioRepository repoInter;
-
+    private IntercambioRepository intercambioRepository;
     @Autowired
-    private IUsuarioLibroService serviceUL;
+    private IUsuarioLibroService usuarioLibroService;
 
     @Override
     public void guardarIntercambio(UsuarioLibro ulPrestatario, UsuarioLibro ulPrestador) {
@@ -34,17 +30,17 @@ public class IntercambioService implements IIntercambioService {
         i.setUsuarioPrestador(ulPrestador);
         i.setUsuarioPrestatario(ulPrestatario);
         ulPrestatario.setEstadoPrestamo("ocupado");
-        serviceUL.editar(ulPrestatario);
+        usuarioLibroService.editar(ulPrestatario);
         ulPrestador.setEstadoPrestamo("ocupado");
-        serviceUL.editar(ulPrestador);
-        repoInter.save(i);
+        usuarioLibroService.editar(ulPrestador);
+        intercambioRepository.save(i);
     }
 
     @Override
     public List<Intercambio> encontrarULPrestador(List<UsuarioLibro> ul) {
         List<Intercambio> iList = new ArrayList<>();
         ul.forEach(x -> {
-            List<Intercambio> i = repoInter.findByUsuarioPrestador(x);
+            List<Intercambio> i = intercambioRepository.findByUsuarioPrestador(x);
             if (i.size() != 0) {
                 i.forEach(y -> iList.add(y));
             }
@@ -56,7 +52,7 @@ public class IntercambioService implements IIntercambioService {
     public List<Intercambio> encontrarULPrestatario(List<UsuarioLibro> ul) {
         List<Intercambio> iList = new ArrayList<>();
         ul.forEach(x -> {
-            List<Intercambio> i = repoInter.findByUsuarioPrestatario(x);
+            List<Intercambio> i = intercambioRepository.findByUsuarioPrestatario(x);
             if (i.size() != 0) {
                 i.forEach(y -> iList.add(y));
             }
@@ -66,27 +62,26 @@ public class IntercambioService implements IIntercambioService {
 
     @Override
     public void finIntercambio(Integer id) {
-        Intercambio i = repoInter.findById(id).get();
+        Intercambio i = intercambioRepository.findById(id).get();
         Date date = Date.from(Instant.now());
         i.setFechaDevolucion(date);
-        repoInter.save(i);
+        intercambioRepository.save(i);
         UsuarioLibro ulPrestador = i.getUsuarioPrestador();
         ulPrestador.setEstadoPrestamo("Libre");
-        serviceUL.editar(ulPrestador);
+        usuarioLibroService.editar(ulPrestador);
         UsuarioLibro ulPrestatario = i.getUsuarioPrestatario();
         ulPrestatario.setEstadoPrestamo("Libre");
-        serviceUL.editar(ulPrestatario);
-
+        usuarioLibroService.editar(ulPrestatario);
     }
 
     @Override
     public Boolean intercambioPendienteFinalizar(UsuarioLibro ul) {//metodo para comprobar si queda algún intercambio por finalizar
         List<Intercambio> i = new ArrayList<>();
-        i = repoInter.findByUsuarioPrestadorAndFechaDevolucion(ul, null);
+        i = intercambioRepository.findByUsuarioPrestadorAndFechaDevolucion(ul, null);
         if (i.size() != 0 || i != null) {
             return false;
         } else {
-            i = repoInter.findByUsuarioPrestatarioAndFechaDevolucion(ul, null);
+            i = intercambioRepository.findByUsuarioPrestatarioAndFechaDevolucion(ul, null);
             if (i.size() != 0 || i != null) {
                 return false;
             } else {
@@ -98,9 +93,14 @@ public class IntercambioService implements IIntercambioService {
     @Override
     public Integer contarIntercambiosPendientes(List<UsuarioLibro> ul) {
         Integer result=0;
-        result+=ul.stream().map(x->repoInter.countByFechaDevolucionAndUsuarioPrestador(null, x)).collect(Collectors.summingInt(Integer::intValue));
-        result+=ul.stream().map(x->repoInter.countByFechaDevolucionAndUsuarioPrestatario(null, x)).collect(Collectors.summingInt(Integer::intValue));
+        result+=ul.stream()
+                .map(x-> intercambioRepository.countByFechaDevolucionAndUsuarioPrestador(null, x))
+                .collect(Collectors.summingInt(Integer::intValue));
+
+        result+=ul.stream()
+                .map(x-> intercambioRepository.countByFechaDevolucionAndUsuarioPrestatario(null, x))
+                .collect(Collectors.summingInt(Integer::intValue));
+
         return result;
     }
-
 }

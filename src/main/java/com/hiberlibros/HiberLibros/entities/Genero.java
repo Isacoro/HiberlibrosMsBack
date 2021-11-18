@@ -13,10 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- *
- * @author Isabel
- */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,12 +27,15 @@ public class Genero {
 
     private String nombre;
     private Boolean desactivado;
+
     @JsonBackReference
     @OneToMany(mappedBy = "id")
     private List<Relato> listaRelatos;
+
     @JsonBackReference
     @OneToMany(mappedBy = "id")
     private List<Libro> listaLibros;
+
     @JsonBackReference
     @OneToMany(mappedBy = "id")
     private List<Preferencia> listaPreferencias;

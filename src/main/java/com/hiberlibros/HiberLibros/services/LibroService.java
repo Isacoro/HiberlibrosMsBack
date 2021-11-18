@@ -13,36 +13,32 @@ import org.springframework.stereotype.Service;
 import com.hiberlibros.HiberLibros.interfaces.ILibroService;
 import com.hiberlibros.HiberLibros.interfaces.IUsuarioLibroService;
 
-/**
- *
- * @author Usuario
- */
+
 @Service
 public class LibroService implements ILibroService {
 
     @Autowired
-    private LibroRepository libroRep;
-
+    private LibroRepository libroRepository;
     @Autowired
-    private IUsuarioLibroService serviceUL;
-
+    private IUsuarioLibroService usuarioLibroService;
     @Autowired
-    private IForoLibroService serviceForoLibro;
+    private IForoLibroService foroLibroService;
 
+    //Recibe un string y busca si hay coincidencias en isbn o libro
     @Override
-    public List<Libro> buscarLibro(String libro) {//recibe un string y busca si hay coincidencias en isbn o libro
-        return libroRep.findByDesactivadoAndIsbnContainsIgnoreCaseOrTituloContainsIgnoreCase(Boolean.FALSE, libro, libro);
+    public List<Libro> buscarLibro(String libro) {
+        return libroRepository.findByDesactivadoAndIsbnContainsIgnoreCaseOrTituloContainsIgnoreCase(Boolean.FALSE, libro, libro);
     }
 
     @Override
     public Libro libroId(Integer id) {
-        return libroRep.findById(id).get();
+        return libroRepository.findById(id).get();
     }
 
     @Override
     public void guardarLibro(Libro l) {
         l.setDesactivado(Boolean.FALSE);
-        libroRep.save(l);
+        libroRepository.save(l);
     }
 
     @Override
@@ -62,39 +58,37 @@ public class LibroService implements ILibroService {
         
         guardarLibro(l);
         }
-
     }
 
     @Override
     public Integer contarLibros() {
-        long numLibros = libroRep.findAll().stream()
+        long numLibros = libroRepository.findAll().stream()
                 .count();
         return (int) (numLibros);
     }
 
     @Override
     public List<Libro> encontrarPorAutor(Autor a) {
-        return libroRep.findByAutor(a);
+        return libroRepository.findByAutor(a);
     }
 
     @Override
     public Boolean bajaLibroId(Integer id) {
         Libro l = libroId(id);
-        List<ForoLibro> fl = serviceForoLibro.recuperarForosDeLibro(l);
-        if (serviceUL.libroBorrado(l)) {
-            fl.forEach(x -> serviceForoLibro.bajaForoLibro(x.getId()));
+        List<ForoLibro> fl = foroLibroService.recuperarForosDeLibro(l);
+        if (usuarioLibroService.libroBorrado(l)) {
+            fl.forEach(x -> foroLibroService.bajaForoLibro(x.getId()));
             l.setDesactivado(Boolean.TRUE);
-            libroRep.save(l);
+            libroRepository.save(l);
             return true;
         } else {
             return false;
         }
-
     }
 
     @Override
     public Boolean bajaLibrosList(List<Libro> l) {
-        Boolean result = serviceUL.librosOcupado(l);
+        Boolean result = usuarioLibroService.librosOcupado(l);
         if (result) {//si es verdadero significa que no hay libros en intercambio por lo que se pueden desactivar
             l.forEach(x -> {
                 bajaLibroId(x.getId());
@@ -106,22 +100,21 @@ public class LibroService implements ILibroService {
 
     @Override
     public List<Libro> encontrarDisponible() {
-        return libroRep.findByDesactivado(Boolean.FALSE);
+        return libroRepository.findByDesactivado(Boolean.FALSE);
     }
 
     @Override
     public List<Libro> encontrarPorGenero(Genero g) {
-        return libroRep.findByGenero(g);
+        return libroRepository.findByGenero(g);
     }
 
     @Override
     public List<Libro> encontrarPorEditorial(Editorial e) {
-        return libroRep.findByEditorial(e);
+        return libroRepository.findByEditorial(e);
     }
 
     @Override
     public List<Libro> encontrarPorAutorActivos(Autor a) {
-        return libroRep.findByAutorAndDesactivado(a, Boolean.FALSE);
+        return libroRepository.findByAutorAndDesactivado(a, Boolean.FALSE);
     }
-
 }

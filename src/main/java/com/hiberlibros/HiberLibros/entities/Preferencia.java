@@ -1,6 +1,5 @@
 package com.hiberlibros.HiberLibros.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,10 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- *
- * @author Isabel
- */
+
 @Data  
 @NoArgsConstructor
 @AllArgsConstructor

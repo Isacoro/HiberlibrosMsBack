@@ -7,10 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-/**
- *
- * @author Usuario
- */
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Modifying
@@ -26,5 +22,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     public Optional<Usuario> findByMail(String mail);
     
     public Integer countByDesactivado(Boolean b);
-
 }

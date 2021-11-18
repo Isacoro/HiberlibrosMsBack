@@ -13,34 +13,30 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author Usuario
- */
+
 @Service
 public class ComentarioForoService implements IComentarioForoService{
 
     @Autowired
-    private ComentarioForoRepository repoComen;
+    private ComentarioForoRepository comentarioForoRepository;
     
     @Override
     public void altaComentario(ComentarioForo c) {
-        repoComen.save(c);
+        comentarioForoRepository.save(c);
     }
 
     @Override
     public void bajaComentario(Integer idComentario) {
-        repoComen.deleteById(idComentario);
+        comentarioForoRepository.deleteById(idComentario);
     }
 
     @Override
     public void eliminarComentariosForo(ForoLibro fl) {
-       repoComen.deleteByForoLibro(fl);
+       comentarioForoRepository.deleteByForoLibro(fl);
     }
 
     @Override
     public List<ComentarioForo> consultarComentariosPorForo(ForoLibro foroLibro) {
-        return repoComen.findByForoLibro(foroLibro);
+        return comentarioForoRepository.findByForoLibro(foroLibro);
     }
-    
 }

@@ -1,42 +1,32 @@
 package com.hiberlibros.HiberLibros.controllers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hiberlibros.HiberLibros.dtos.LibroDto;
 import com.hiberlibros.HiberLibros.entities.Autor;
-import com.hiberlibros.HiberLibros.entities.Libro;
 import com.hiberlibros.HiberLibros.interfaces.IAutorService;
 import com.hiberlibros.HiberLibros.interfaces.ILibroService;
 import com.hiberlibros.HiberLibros.repositories.AutorLibroRepository;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/autorback")
 public class AutorController {
 
     @Autowired
-    private AutorLibroRepository repo;
-
+    private AutorLibroRepository autorLibroRepository;
     @Autowired
-    private ILibroService ilibroservice;
-
+    private ILibroService libroService;
     @Autowired
     private ModelMapper obj;
-
     @Autowired
     private IAutorService autorService;
 
@@ -57,7 +47,7 @@ public class AutorController {
         Map<String, Object> mo = new HashMap<>();
         
     	Autor a = autorService.encontrarAutor(id).get();
-        mo.put("libros", ilibroservice.encontrarPorAutorActivos(a));
+        mo.put("libros", libroService.encontrarPorAutorActivos(a));
         return mo;
     }
 

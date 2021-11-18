@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.hiberlibros.HiberLibros.services;
 
 import com.hiberlibros.HiberLibros.interfaces.ICorreoService;
@@ -16,19 +11,12 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 
 
-/**
- *
- * @author Usuario
- */
 @Service
 public class CorreosService implements ICorreoService{
     public String enviarCorreo(String destinatario,String asunto, String cuerpo ) {
-    //String destinatario =  "jorgemartinms@gmail.com"; //A quien le quieres escribir.
-    //String asunto = "peticion de intercambio aceptada";
-    //String cuerpo = "la peticion de su libro ha sido aceptada, pase a intercambiarlo";
+        enviarConGMail(destinatario, asunto, cuerpo);
 
-    enviarConGMail(destinatario, asunto, cuerpo);
-    return "enviado";
+        return "enviado";
     }
     
     public String enviarConGMail(String destinatario, String asunto, String cuerpo) {

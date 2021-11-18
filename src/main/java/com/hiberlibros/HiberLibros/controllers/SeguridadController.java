@@ -21,19 +21,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SeguridadController {
 
     @Autowired
-    private UsuarioSeguridadRepository repoUsuSeg;
-
+    private UsuarioSeguridadRepository usuarioSeguridadRepository;
     @Autowired
-    private UsuarioService serviceUsuario;
-
+    private UsuarioService usuarioService;
     @Autowired
-    private RolRepository repoRol;
-
+    private RolRepository rolRepository;
     @Autowired
     private PasswordEncoder passEncoder;
-    
     @Autowired
-    private ISeguridadService serviceSeguridad;
+    private ISeguridadService seguridadService;
     
     
 
@@ -54,12 +50,6 @@ public class SeguridadController {
     public String saludar3() {
         return "saluda 3";
     }
-
-      
-//    @PostMapping("/login")
-//    public String login() {
-//        return "login";
-//    }
     
     @GetMapping("/login2")
     public String login2() {
@@ -74,19 +64,14 @@ public class SeguridadController {
     @PostMapping("/altaUsuarioSeguridad")
     public String altaUsuarioSeguridadPost(Model m, String mail, Integer idUsuario, String password, String nombre_rol) {
         
-        String mensaje = serviceSeguridad.altaUsuarioSeguridad(mail, idUsuario, password, nombre_rol);
+        String mensaje = seguridadService.altaUsuarioSeguridad(mail, idUsuario, password, nombre_rol);
 
         if (mensaje!=null && mensaje.contains("error")){
                 m.addAttribute("errMensaje", "alta no realizada: usuario con este Rol activado previamente");
                 return "/admin/adminGestion";
-                        
         }
-
         return "redirect:/admin/altaUsuarioSeguridad";
-
     }
-    
-    
 
     @GetMapping("/info")
     @ResponseBody

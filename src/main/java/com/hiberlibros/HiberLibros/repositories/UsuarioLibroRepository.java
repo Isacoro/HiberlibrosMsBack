@@ -6,10 +6,7 @@ import com.hiberlibros.HiberLibros.entities.UsuarioLibro;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- *
- * @author Usuario
- */
+
 public interface UsuarioLibroRepository extends JpaRepository<UsuarioLibro, Integer> {
 
     public List<UsuarioLibro> findByUsuario(Usuario u);
@@ -29,9 +26,6 @@ public interface UsuarioLibroRepository extends JpaRepository<UsuarioLibro, Inte
     public List<UsuarioLibro> findByUsuarioAndDesactivado(Usuario u, Boolean desactivado);
     
     public List<UsuarioLibro> findByUsuarioAndDesactivadoAndEstadoPrestamo(Usuario u, Boolean desactivado, String estadoPrestamo);
-    
-    //public List<UsuarioLibro> findByUsuarioNotAndQuieroTengoAndEstadoPrestamoAndDesactivado(Usuario u, String quieroTengo, String estadoPrestamo, Boolean b);
-    
-    public Integer countByUsuarioAndDesactivado(Usuario usuario, Boolean b);
 
+    public Integer countByUsuarioAndDesactivado(Usuario usuario, Boolean b);
 }

@@ -10,15 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TablaLibrosDto implements Serializable {
 
-    Integer id;
-    Integer id_libro;
-    String uriPortada;
-    String isbn;
-    String titulo;
-    String autor;
-    String idioma;
-    String editorial;
-    Double valoracion;
-    String estado;
-    String propietario;
+    private Integer id;
+    private Integer id_libro;
+    private String uriPortada;
+    private String isbn;
+    private String titulo;
+    private String autor;
+    private String idioma;
+    private String editorial;
+    private Double valoracion;
+    private String estado;
+    private String propietario;
 }
