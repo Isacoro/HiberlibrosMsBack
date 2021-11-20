@@ -2,7 +2,6 @@ package com.hiberlibros.HiberLibros.interfaces;
 
 import com.hiberlibros.HiberLibros.entities.Editorial;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface IEditorialService {

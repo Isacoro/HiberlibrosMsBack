@@ -1,7 +1,7 @@
 package com.hiberlibros.HiberLibros.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
